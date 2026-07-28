@@ -2,6 +2,7 @@
 
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
+use App\Models\Property;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +25,13 @@ Route::middleware('auth')->group(function () {
         return redirect('/');
     })->name('logout');
 });
+
+// Page de developpement (vitrine des composants) - non destinee au public,
+// desactivee automatiquement en dehors de l'environnement local.
+if (app()->environment('local')) {
+    Route::get('/dev/composants', function () {
+        return view('dev.composants', [
+            'properties' => Property::with('city')->get(),
+        ]);
+    })->name('dev.composants');
+}
