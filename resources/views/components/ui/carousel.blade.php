@@ -16,9 +16,7 @@
             class="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-border)]"
             aria-label="Precedent"
         >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-4 w-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-            </svg>
+            <x-ui.icon name="chevron-left" class="h-4 w-4" />
         </button>
         <button
             type="button"
@@ -26,9 +24,7 @@
             class="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-border)]"
             aria-label="Suivant"
         >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="h-4 w-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-            </svg>
+            <x-ui.icon name="chevron-right" class="h-4 w-4" />
         </button>
     </div>
 </div>

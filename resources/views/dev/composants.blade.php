@@ -1,10 +1,10 @@
 <x-layouts.app>
     <div class="mx-auto max-w-5xl space-y-16 px-6 py-16">
         <div>
-            <h1 class="text-3xl font-semibold">Vitrine des composants</h1>
+            <h1 class="text-3xl font-semibold">Vitrine des composants (v2)</h1>
             <p class="mt-2 text-[color:var(--color-ink-secondary)]">
-                Page de developpement (non destinee au public) pour verifier visuellement chaque
-                composant reutilisable avant l'assemblage de la vraie page d'accueil (module 6).
+                Page de developpement (non destinee au public), revue pour coller de plus pres
+                a la structure exacte de la maquette (carte, badges, accordeon, formulaire).
             </p>
         </div>
 
@@ -20,6 +20,33 @@
         </section>
 
         <section>
+            <h2 class="mb-6 text-h2 font-semibold">Cartes de biens (cliquer le chevron pour deplier)</h2>
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                @foreach ($properties as $property)
+                    <div x-reveal>
+                        <x-ui.property-card :property="$property" />
+                    </div>
+                @endforeach
+            </div>
+        </section>
+
+        <section>
+            <h2 class="mb-6 text-h2 font-semibold">Carte "mise en avant" (variante description)</h2>
+            <div class="max-w-xs">
+                <x-ui.property-card :property="$properties->firstWhere('featured', true)" variant="description" />
+            </div>
+        </section>
+
+        <section>
+            <h2 class="mb-6 text-h2 font-semibold">Carte d'introduction (type "Fresh Opportunities")</h2>
+            <div class="max-w-xs">
+                <x-ui.intro-card title="Nouvelles opportunites">
+                    Explorez nos dernieres annonces et trouvez le bien qui vous correspond.
+                </x-ui.intro-card>
+            </div>
+        </section>
+
+        <section>
             <h2 class="mb-6 text-h2 font-semibold">Carrousel</h2>
             <x-ui.carousel>
                 @foreach ($properties as $property)
@@ -30,25 +57,34 @@
             </x-ui.carousel>
         </section>
 
+        <section class="rounded-[var(--radius-card)] bg-[color:var(--color-ink)] p-10">
+            <h2 class="mb-6 text-h2 font-semibold text-white">Badges flottants (sur photo)</h2>
+            <div class="flex flex-wrap gap-4">
+                <x-ui.floating-tag>Buy Property</x-ui.floating-tag>
+                <x-ui.floating-tag dot-position="right">Sell Property</x-ui.floating-tag>
+                <x-ui.badge>Balcony 2nd Floor</x-ui.badge>
+            </div>
+        </section>
+
         <section>
-            <h2 class="mb-6 text-h2 font-semibold">Badges</h2>
+            <h2 class="mb-6 text-h2 font-semibold">Badges "eyebrow" (etiquettes de section)</h2>
             <div class="flex flex-wrap gap-2">
-                <x-ui.badge>Vue mer</x-ui.badge>
-                <x-ui.badge>Balcon 2e etage</x-ui.badge>
-                <x-ui.badge variant="solid">A la une</x-ui.badge>
+                <x-ui.badge>ABOUT</x-ui.badge>
+                <x-ui.badge>EXPLORE</x-ui.badge>
+                <x-ui.badge>POPULAR</x-ui.badge>
             </div>
         </section>
 
         <section>
             <h2 class="mb-6 text-h2 font-semibold">Accordeon (FAQ)</h2>
             <x-ui.accordion>
-                <x-ui.accordion-item question="Comment fonctionne la plateforme ?">
+                <x-ui.accordion-item number="01" question="Comment fonctionne la plateforme ?">
                     Notre plateforme connecte acheteurs et vendeurs via des outils de recherche intuitifs.
                 </x-ui.accordion-item>
-                <x-ui.accordion-item question="Est-ce gratuit ?">
+                <x-ui.accordion-item number="02" question="Est-ce gratuit ?">
                     Oui, la consultation des biens est entierement gratuite.
                 </x-ui.accordion-item>
-                <x-ui.accordion-item question="Comment soumettre un bien ?">
+                <x-ui.accordion-item number="03" question="Comment soumettre un bien ?">
                     Depuis votre espace personnel, une fois connecte.
                 </x-ui.accordion-item>
             </x-ui.accordion>
@@ -66,7 +102,7 @@
                 </x-form.select>
                 <div class="flex gap-3">
                     <x-form.button>Valider</x-form.button>
-                    <x-form.button variant="outline" type="button">Annuler</x-form.button>
+                    <x-form.button variant="outline" :icon="false" type="button">Annuler</x-form.button>
                 </div>
             </form>
         </section>

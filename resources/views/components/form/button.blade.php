@@ -1,4 +1,4 @@
-@props(['variant' => 'solid'])
+@props(['variant' => 'solid', 'icon' => true])
 
 @php
 $classes = match ($variant) {
@@ -7,6 +7,9 @@ $classes = match ($variant) {
 };
 @endphp
 
-<button {{ $attributes->merge(['type' => 'submit', 'class' => "rounded-[var(--radius-pill)] px-4 py-2 font-medium transition hover:opacity-90 $classes"]) }}>
+<button {{ $attributes->merge(['type' => 'submit', 'class' => "inline-flex items-center justify-center gap-2 rounded-[var(--radius-pill)] px-4 py-2 font-medium transition hover:opacity-90 $classes"]) }}>
     {{ $slot }}
+    @if ($icon)
+        <x-ui.icon name="arrow-up-right" class="h-4 w-4" />
+    @endif
 </button>

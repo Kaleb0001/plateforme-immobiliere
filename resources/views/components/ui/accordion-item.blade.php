@@ -1,17 +1,24 @@
-@props(['question'])
+@props(['question', 'number' => null])
 
 <div x-data="{ open: false }" class="py-4">
-    <button type="button" @click="open = !open" class="flex w-full items-center justify-between text-left">
-        <span class="font-medium">{{ $question }}</span>
-        <svg
-            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-            class="h-4 w-4 shrink-0 transition-transform duration-300"
-            :class="open ? 'rotate-180' : ''"
-        >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-        </svg>
+    <button type="button" @click="open = !open" class="flex w-full items-center justify-between gap-4 text-left">
+        <span class="flex items-baseline gap-3">
+            @if ($number)
+                <span class="text-xs text-[color:var(--color-ink-secondary)]">{{ $number }}</span>
+            @endif
+            <span class="font-medium">{{ $question }}</span>
+        </span>
+
+        {{-- Le bouton reste toujours borde, que la question soit ouverte ou non. --}}
+        <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[color:var(--color-border)]">
+            <x-ui.icon
+                name="chevron-down"
+                class="h-4 w-4 transition-transform duration-300"
+                x-bind:class="open ? '-rotate-180' : ''"
+            />
+        </span>
     </button>
-    <div x-show="open" x-collapse class="pt-2 text-sm text-[color:var(--color-ink-secondary)]">
+    <div x-show="open" x-collapse class="pl-8 pt-2 text-sm text-[color:var(--color-ink-secondary)]">
         {{ $slot }}
     </div>
 </div>
