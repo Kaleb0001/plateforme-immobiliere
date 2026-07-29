@@ -1,41 +1,36 @@
-# Révision des composants UI — fidélité à la maquette
+# Corrections après comparaison avec la maquette
 
-Tu avais raison, la première passe était trop générique. J'ai zoomé précisément sur tes nouvelles captures (carte avec agent, FAQ, formulaire de contact, badges du hero) pour corriger la structure exacte plutôt que de réinterpréter approximativement. Voici ce qui change et pourquoi.
+Merci pour les captures détaillées — très utile pour comparer précisément. Réponse à ta question sur les photos, puis ce que j'ai corrigé.
 
-## Ce qui a été corrigé
+## Les photos : réponse concrète, pas juste "plus tard"
 
-**Carte de bien** — la vraie structure est : photo (coins arrondis en haut), cœur favori en cercle blanc semi-transparent en haut à droite, puis un bloc texte avec : titre + petit bouton carré bordé contenant une flèche (↗), ville avec icône de repère, et une dernière ligne prix/agent. Ma première version mettait tout dans un seul bloc sans cette hiérarchie — corrigé.
+La vraie fonctionnalité (upload, galerie gérée depuis l'admin) reste au module 7 — mais je n'ai pas voulu te faire attendre jusque-là pour "voir le rendu". J'ai ajouté au seeder un téléchargement automatique de photos de substitution (Lorem Picsum, un service gratuit d'images aléatoires) pour chaque bien : dès que tu relances le seeder, toutes les cartes, le hero et le bien vedette auront une vraie photo à la place de l'icône grise. Ce ne sont pas des photos immobilières réelles, mais ça te donnera un rendu visuel bien plus proche de la maquette pour juger le reste (mise en page, proportions, ombres).
 
-**Carte "mise en avant"** (ex. Happy Lagoon Farm) — fond sombre uni, icône marque-page (pas cœur) en haut à droite, description, prix. C'est une vraie variante visuelle, pas juste une carte avec plus de texte — j'ai séparé ça proprement (`variant="description"`).
+**Ça nécessite un accès internet sur ta machine** au moment de lancer le seeder (contrairement à moi qui n'y ai pas accès) — ce qui est le cas pour toi, donc ça devrait fonctionner directement.
 
-**Badges flottants sur photo** (Buy Property, Balcony 2nd Floor...) — j'avais oublié le petit point noir accolé à la pilule, visible sur toutes tes captures. Nouveau composant `x-ui.floating-tag` dédié à ce motif, séparé des badges "étiquette de section" (ABOUT, EXPLORE...) qui eux restent de simples pilules sans point.
+## Ce que j'ai trouvé en comparant tes captures à la maquette
 
-**FAQ** — chaque question a un numéro ("01", "02"...) et le chevron n'est dans un bouton bordé que lorsque la question est ouverte (fermé = icône seule). Corrigé.
+**Un vrai problème, sur presque tout le texte du site : les accents français manquaient partout** ("facon" au lieu de "façon", "Decouvrez" au lieu de "Découvrez", "necessaires" au lieu de "nécessaires", etc.). C'est une erreur de ma part — par excès de prudence sur l'encodage des caractères dans mes outils, j'avais évité les accents en écrivant le contenu, ce qui n'était pas justifié techniquement. J'ai vérifié : les accents fonctionnent parfaitement dans cet environnement. Repassé sur tout le contenu généré (textes de la page d'accueil, FAQ, biens d'exemple, boutons, formulaires) pour les rétablir.
 
-**Champs de formulaire** — sur ta capture du formulaire de contact, les champs ont un fond gris clair uni, sans bordure visible — pas le style bordé que j'avais mis. Corrigé sur `x-form.input` et `x-form.select`.
+**Un détail visuel** : sur ta capture du widget de recherche, le champ "Budget" affichait un texte tronqué ("200 0" au lieu de "200 000"). Le placeholder était trop long pour la largeur du champ — raccourci.
 
-**Boutons** — "Search ↗", "Send ↗" : la flèche fait partie du bouton lui-même, pas du texte. `x-form.button` l'ajoute maintenant automatiquement (désactivable avec `:icon="false"`).
+Le reste correspond bien à la maquette dans sa structure (sections dans le bon ordre, widget de recherche fonctionnel avec les vraies villes/types/styles, carte "à la une" dépliée par défaut, grilles "derniers biens"/"biens à louer" qui affichent les bons biens, formulaire de contact qui enregistre réellement) — bon signe que l'architecture tient la route.
 
-**Nouveau composant `x-ui.icon`** : centralise les icônes SVG utilisées partout (cœur, marque-page, flèche, repère, photo, chevron) pour ne pas les dupliquer dans chaque composant.
+## Fichiers de ce correctif (20 fichiers, zip)
+Tous remplacent des fichiers déjà livrés dans les modules précédents — aucun nouveau fichier cette fois, uniquement des corrections de contenu et un ajustement de style.
 
-**Nouveau composant `x-ui.intro-card`** : le bloc texte "Fresh Opportunities" qui s'intercale dans la grille de biens.
-
-J'ai aussi mis à jour les formulaires de connexion/inscription (module 4) pour utiliser ces mêmes composants — tout est maintenant cohérent.
-
-## Point que je ne peux pas deviner — ta décision nécessaire
-
-Sur la page "Buy Property" (ta capture avec la carte), chaque bien affiche un agent avec avatar, nom **et une note (4.5 Review)**. Ça n'existe pas dans notre modèle de données actuel — on n'a jamais prévu de système d'avis/notation, ni sur les agents ni sur les biens. Deux options :
-- **Simple** : on affiche juste le nom de l'agent assigné, sans note (ce que j'ai fait pour l'instant, en attendant ta réponse)
-- **Complet** : on ajoute un vrai système de notation (nouvelle table, logique métier, source des avis à définir) — un ajout non négligeable au périmètre initial
-
-Dis-moi ce que tu préfères, ça n'a pas besoin d'être tranché maintenant.
-
-## Etapes a suivre chez toi
+## Étapes chez toi
 ```bash
-# Copier les fichiers par-dessus (tous remplacent des fichiers du module 5,
-# sauf icon.blade.php, floating-tag.blade.php et intro-card.blade.php qui sont nouveaux)
+# Copier les fichiers par-dessus les précédents
+
+php artisan migrate:fresh --seed
+
+# Réattribuer le rôle super_admin (perdu par le migrate:fresh)
+php artisan tinker
+>>> App\Models\User::where('email', 'admin@gmail.com')->first()->assignRole('super_admin');
+>>> exit
 
 composer run dev
 ```
 
-Vérifie `/dev/composants` — nouvelle vitrine avec la carte "mise en avant", la carte d'intro, et les badges flottants sur fond sombre pour bien voir le contraste.
+Regarde le résultat avec les photos et les accents corrigés, et n'hésite pas à renvoyer des captures si autre chose cloche — c'est exactement ce type de comparaison précise qui permet d'arriver à un résultat fidèle.

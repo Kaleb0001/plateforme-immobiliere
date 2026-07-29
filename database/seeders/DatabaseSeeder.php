@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             TaxonomySeeder::class,
             PropertyDemoSeeder::class,
+            FaqItemSeeder::class,
+            HomePageSeeder::class,
         ]);
     }
 }

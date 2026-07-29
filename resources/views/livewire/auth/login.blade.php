@@ -13,7 +13,7 @@
         <x-form.button class="w-full">Se connecter</x-form.button>
 
         <p class="text-center text-sm text-[color:var(--color-ink-secondary)]">
-            Pas encore de compte ? <a href="{{ route('register') }}" class="underline">Creer un compte</a>
+            Pas encore de compte ? <a href="{{ route('register') }}" class="underline">Créer un compte</a>
         </p>
     </form>
 </div>

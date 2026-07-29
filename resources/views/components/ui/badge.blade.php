@@ -3,6 +3,7 @@
 @php
 $classes = match ($variant) {
     'solid' => 'bg-[color:var(--color-ink)] text-white',
+    'dark' => 'border border-white/40 bg-transparent text-white',
     default => 'border border-[color:var(--color-border)] bg-white/90 text-[color:var(--color-ink)]',
 };
 @endphp

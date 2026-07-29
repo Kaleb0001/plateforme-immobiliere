@@ -1,34 +1,16 @@
-@props(['property', 'variant' => 'default'])
+@props(['property'])
 
-@php
-$isDescription = $variant === 'description' || ($property->featured && $property->description);
-@endphp
-
-<div class="h-full overflow-hidden rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] shadow-[var(--shadow-card)]">
-    @if ($isDescription)
-        {{-- Variante "mise en avant" (ex. Happy Lagoon Farm dans la maquette) :
-             fond sombre, description, sans photo. --}}
-        <div class="relative flex h-full min-h-[320px] flex-col justify-between bg-[color:var(--color-ink)] p-5 text-white">
-            <button
-                type="button"
-                class="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-lg border border-white/30"
-                aria-label="Sauvegarder"
-            >
-                <x-ui.icon name="bookmark" class="h-4 w-4" />
-            </button>
-
-            <div>
-                <h3 class="text-h3 font-semibold">{{ $property->title }}</h3>
-                <p class="mt-1 flex items-center gap-1 text-sm text-white/70">
-                    <x-ui.icon name="map-pin" class="h-3.5 w-3.5" />
-                    {{ $property->city?->name }}
-                </p>
-                <p class="mt-3 text-sm text-white/80">{{ Str::limit($property->description, 160) }}</p>
-            </div>
-
-            <p class="pt-4 text-lg font-semibold">{{ number_format((float) $property->price, 2, ',', ' ') }} €</p>
-        </div>
-    @else
+{{--
+    Carte de bien interactive : l'icone (chevron dans un bouton toujours borde,
+    comme sur la FAQ) bascule entre la vue photo et une vue description sur fond
+    sombre. Un bien marque "a la une" s'affiche deplie par defaut (comme "Happy
+    Lagoon Farm" sur la maquette), tout en restant repliable au clic.
+--}}
+<div
+    x-data="{ expanded: {{ $property->featured ? 'true' : 'false' }} }"
+    class="h-full overflow-hidden rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] shadow-[var(--shadow-card)]"
+>
+    <div x-show="!expanded" x-transition.opacity.duration.300ms>
         <div class="relative aspect-[4/3] overflow-hidden bg-neutral-100">
             @if ($property->getFirstMediaUrl('gallery'))
                 <img
@@ -54,9 +36,14 @@ $isDescription = $variant === 'description' || ($property->featured && $property
         <div class="space-y-2 p-4">
             <div class="flex items-start justify-between gap-2">
                 <h3 class="text-h3 font-semibold">{{ $property->title }}</h3>
-                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[color:var(--color-border)]">
-                    <x-ui.icon name="arrow-up-right" class="h-3.5 w-3.5" />
-                </span>
+                <button
+                    type="button"
+                    @click="expanded = true"
+                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[color:var(--color-border)]"
+                    aria-label="Voir la description"
+                >
+                    <x-ui.icon name="chevron-down" class="h-4 w-4" />
+                </button>
             </div>
 
             <p class="flex items-center gap-1 text-sm text-[color:var(--color-ink-secondary)]">
@@ -65,13 +52,36 @@ $isDescription = $variant === 'description' || ($property->featured && $property
             </p>
 
             <div class="flex items-center justify-between pt-1">
-                {{-- L'agent assigne peut s'afficher ici (nom seulement, voir remarque
-                     dans le README a propos des avis/notes vus sur la maquette). --}}
                 <span class="text-sm text-[color:var(--color-ink-secondary)]">
                     {{ $property->assignedAgent?->name }}
                 </span>
                 <span class="font-semibold">{{ number_format((float) $property->price, 2, ',', ' ') }} €</span>
             </div>
         </div>
-    @endif
+    </div>
+
+    <div x-show="expanded" x-cloak x-transition.opacity.duration.300ms class="flex h-full min-h-[320px] flex-col justify-between bg-[color:var(--color-ink)] p-5 text-white">
+        <div>
+            <div class="flex items-start justify-between gap-2">
+                <h3 class="text-h3 font-semibold">{{ $property->title }}</h3>
+                <button
+                    type="button"
+                    @click="expanded = false"
+                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/30"
+                    aria-label="Voir la photo"
+                >
+                    <x-ui.icon name="chevron-down" class="h-4 w-4 -rotate-180" />
+                </button>
+            </div>
+
+            <p class="mt-1 flex items-center gap-1 text-sm text-white/70">
+                <x-ui.icon name="map-pin" class="h-3.5 w-3.5" />
+                {{ $property->city?->name }}
+            </p>
+
+            <p class="mt-3 text-sm text-white/80">{{ $property->description }}</p>
+        </div>
+
+        <p class="pt-4 font-semibold">{{ number_format((float) $property->price, 2, ',', ' ') }} €</p>
+    </div>
 </div>

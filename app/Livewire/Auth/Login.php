@@ -21,14 +21,13 @@ class Login extends Component
         ]);
 
         if (! Auth::attempt($credentials, $this->remember)) {
-            $this->addError('email', "Ces identifiants ne correspondent a aucun compte.");
+            $this->addError('email', 'Ces identifiants ne correspondent à aucun compte.');
 
             return;
         }
 
         request()->session()->regenerate();
 
-        //$this->redirect(route('account'), navigate: true);
         $this->redirect(route('account'));
     }
 
