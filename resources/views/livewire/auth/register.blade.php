@@ -2,40 +2,16 @@
     <form wire:submit="register" class="w-full max-w-sm space-y-4 rounded-[var(--radius-card)] border border-[color:var(--color-border)] p-8 shadow-[var(--shadow-card)]">
         <h1 class="text-2xl font-semibold">Creer un compte</h1>
 
-        <div>
-            <label class="text-sm">Nom</label>
-            <input type="text" wire:model="name" class="w-full rounded-[var(--radius-field)] border border-[color:var(--color-border)] px-3 py-2">
-            @error('name') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
-        </div>
+        <x-form.input name="name" label="Nom" wire:model="name" />
+        <x-form.input name="email" type="email" label="Email" wire:model="email" />
+        <x-form.input name="phone" label="Telephone (optionnel)" wire:model="phone" />
+        <x-form.input name="password" type="password" label="Mot de passe" wire:model="password" />
+        <x-form.input name="password_confirmation" type="password" label="Confirmer le mot de passe" wire:model="password_confirmation" />
 
-        <div>
-            <label class="text-sm">Email</label>
-            <input type="email" wire:model="email" class="w-full rounded-[var(--radius-field)] border border-[color:var(--color-border)] px-3 py-2">
-            @error('email') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
-        </div>
-
-        <div>
-            <label class="text-sm">Telephone (optionnel)</label>
-            <input type="text" wire:model="phone" class="w-full rounded-[var(--radius-field)] border border-[color:var(--color-border)] px-3 py-2">
-        </div>
-
-        <div>
-            <label class="text-sm">Mot de passe</label>
-            <input type="password" wire:model="password" class="w-full rounded-[var(--radius-field)] border border-[color:var(--color-border)] px-3 py-2">
-            @error('password') <p class="text-sm text-red-600">{{ $message }}</p> @enderror
-        </div>
-
-        <div>
-            <label class="text-sm">Confirmer le mot de passe</label>
-            <input type="password" wire:model="password_confirmation" class="w-full rounded-[var(--radius-field)] border border-[color:var(--color-border)] px-3 py-2">
-        </div>
-
-        <button type="submit" class="w-full rounded-[var(--radius-pill)] bg-[color:var(--color-ink)] px-4 py-2 text-white">
-            Creer mon compte
-        </button>
+        <x-form.button class="w-full">Creer mon compte</x-form.button>
 
         <p class="text-center text-sm text-[color:var(--color-ink-secondary)]">
-            Deja un compte ? <a href="{{ route('login') }}" wire:navigate class="underline">Se connecter</a>
+            Deja un compte ? <a href="{{ route('login') }}" class="underline">Se connecter</a>
         </p>
     </form>
 </div>

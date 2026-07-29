@@ -12,6 +12,8 @@
     @livewireStyles
 </head>
 <body class="antialiased">
+    {{-- Navigation minimale et fonctionnelle - remplacee par le vrai header
+         pixel-perfect de la maquette au module 6. --}}
     <nav class="flex items-center justify-end gap-4 px-6 py-4 text-sm">
         @guest
             <a href="{{ route('login') }}">Connexion</a>
