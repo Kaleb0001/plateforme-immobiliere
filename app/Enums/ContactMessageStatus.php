@@ -13,7 +13,7 @@ enum ContactMessageStatus: string
         return match ($this) {
             self::NonLu => 'Non lu',
             self::Lu => 'Lu',
-            self::Traite => 'Traite',
+            self::Traite => 'Traité',
         };
     }
 }

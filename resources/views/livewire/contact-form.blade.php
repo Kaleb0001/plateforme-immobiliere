@@ -1,7 +1,7 @@
 <form wire:submit="send" class="space-y-4 rounded-[var(--radius-card)] bg-white p-6 text-[color:var(--color-ink)]">
     @if ($sent)
         <p class="rounded-[var(--radius-field)] bg-green-50 p-3 text-sm text-green-700">
-            Votre message a bien ete envoye, merci !
+            Votre message a bien été envoyé, merci !
         </p>
     @endif
 

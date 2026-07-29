@@ -4,7 +4,7 @@
     <div class="flex justify-center">
         <x-ui.badge>{{ $config['eyebrow'] ?? 'FAQ' }}</x-ui.badge>
     </div>
-    <h2 class="mt-6 text-h2 font-semibold">{{ $config['title'] ?? 'Questions frequentes' }}</h2>
+    <h2 class="mt-6 text-h2 font-semibold">{{ $config['title'] ?? 'Questions fréquentes' }}</h2>
 
     <div class="mx-auto mt-10 max-w-2xl text-left">
         <x-ui.accordion>

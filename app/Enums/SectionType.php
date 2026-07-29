@@ -18,9 +18,9 @@ enum SectionType: string
     {
         return match ($this) {
             self::Hero => 'Hero',
-            self::About => 'A propos',
+            self::About => 'À propos',
             self::FeaturedShowcase => 'Bien vedette',
-            self::HowItWorks => 'Comment ca marche',
+            self::HowItWorks => 'Comment ça marche',
             self::PropertyGrid => 'Grille de biens',
             self::Faq => 'FAQ',
             self::Contact => 'Contact',

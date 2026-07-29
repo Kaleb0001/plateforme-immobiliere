@@ -15,9 +15,9 @@
     </div>
 
     <div class="mt-10 flex flex-col justify-between gap-4 border-t border-[color:var(--color-border)] pt-6 text-sm text-[color:var(--color-ink-secondary)] sm:flex-row">
-        <span>&copy; {{ now()->year }} VOTRE-MARQUE. Tous droits reserves.</span>
+        <span>&copy; {{ now()->year }} VOTRE-MARQUE. Tous droits réservés.</span>
         <div class="flex gap-4">
-            <a href="#">Politique de confidentialite</a>
+            <a href="#">Politique de confidentialité</a>
             <a href="#">Conditions d'utilisation</a>
         </div>
     </div>

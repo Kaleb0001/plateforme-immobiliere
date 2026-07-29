@@ -5,8 +5,8 @@ $steps = $config['steps'] ?? [];
 
 <section class="grid grid-cols-1 gap-12 px-6 py-24 sm:grid-cols-2 sm:px-12" x-reveal>
     <div>
-        <x-ui.badge>{{ $config['eyebrow'] ?? 'COMMENT CA MARCHE' }}</x-ui.badge>
-        <h2 class="mt-6 text-h2 font-semibold">{{ $config['title'] ?? 'Comment ca marche ?' }}</h2>
+        <x-ui.badge>{{ $config['eyebrow'] ?? 'COMMENT ÇA MARCHE' }}</x-ui.badge>
+        <h2 class="mt-6 text-h2 font-semibold">{{ $config['title'] ?? 'Comment ça marche ?' }}</h2>
 
         <div class="mt-8 space-y-8">
             @foreach ($steps as $i => $step)

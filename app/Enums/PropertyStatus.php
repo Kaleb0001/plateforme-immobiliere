@@ -16,10 +16,10 @@ enum PropertyStatus: string
         return match ($this) {
             self::Brouillon => 'Brouillon',
             self::EnAttenteValidation => 'En attente de validation',
-            self::Publie => 'Publie',
-            self::Refuse => 'Refuse',
+            self::Publie => 'Publié',
+            self::Refuse => 'Refusé',
             self::Vendu => 'Vendu',
-            self::Loue => 'Loue',
+            self::Loue => 'Loué',
         };
     }
 }

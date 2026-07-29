@@ -36,11 +36,8 @@ $positionClasses = [
                 <p class="mt-2 line-clamp-2 text-sm text-[color:var(--color-ink-secondary)]">{{ $property->description }}</p>
 
                 <div class="mt-4 flex items-center justify-between">
-                    {{-- Navigation decorative pour l'instant : un seul bien en vedette
-                         existe. Reelement fonctionnelle une fois plusieurs biens "a la
-                         une" geres depuis l'admin (module 7). --}}
                     <div class="flex gap-2">
-                        <button type="button" class="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-border)]" aria-label="Precedent">
+                        <button type="button" class="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-border)]" aria-label="Précédent">
                             <x-ui.icon name="chevron-left" class="h-4 w-4" />
                         </button>
                         <button type="button" class="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-border)]" aria-label="Suivant">

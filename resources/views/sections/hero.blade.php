@@ -13,7 +13,7 @@
                     <a href="#">Vendre un bien</a>
                     <a href="#">Acheter un bien</a>
                     <a href="#">Louer</a>
-                    <a href="#">A propos</a>
+                    <a href="#">À propos</a>
                     <a href="#">Ressources</a>
                 </nav>
 
@@ -91,7 +91,7 @@
                 @endforeach
             </x-form.select>
 
-            <x-form.input name="price" label="Budget" placeholder="Ex. 100 000 - 200 000" />
+            <x-form.input name="price" label="Budget" placeholder="100k - 200k €" />
 
             <x-form.button type="button" class="w-full justify-center">Rechercher</x-form.button>
         </form>

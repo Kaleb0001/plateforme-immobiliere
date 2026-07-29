@@ -20,10 +20,10 @@ class HomePageSeeder extends Seeder
                 'order' => 1,
                 'config' => [
                     'headline_strong_1' => 'Nous vous offrons',
-                    'headline_light_1' => ' une nouvelle facon',
+                    'headline_light_1' => ' une nouvelle façon',
                     'headline_light_2' => 'de trouver le ',
-                    'headline_strong_2' => 'bien 🏠 de vos reves',
-                    'subtitle' => 'Nous vous aidons a trouver le bien ideal, un projet a la fois. Votre satisfaction est notre priorite.',
+                    'headline_strong_2' => 'bien 🏠 de vos rêves',
+                    'subtitle' => 'Nous vous aidons à trouver le bien idéal, un projet à la fois. Votre satisfaction est notre priorité.',
                     'tag_1' => 'Acheter un bien',
                     'tag_2' => 'Vendre un bien',
                 ],
@@ -32,9 +32,9 @@ class HomePageSeeder extends Seeder
                 'type' => 'about',
                 'order' => 2,
                 'config' => [
-                    'eyebrow' => 'A PROPOS',
-                    'strong_text' => 'Nous sommes votre partenaire de confiance dans l\'immobilier. Notre equipe ',
-                    'light_text' => 'est dediee a vous offrir un service personnalise et les meilleurs resultats possibles. De la recherche de votre bien ideal a la vente de votre propriete au juste prix, nous vous accompagnons a chaque etape.',
+                    'eyebrow' => 'À PROPOS',
+                    'strong_text' => "Nous sommes votre partenaire de confiance dans l'immobilier. Notre équipe ",
+                    'light_text' => 'est dédiée à vous offrir un service personnalisé et les meilleurs résultats possibles. De la recherche de votre bien idéal à la vente de votre propriété au juste prix, nous vous accompagnons à chaque étape.',
                 ],
             ],
             [
@@ -46,12 +46,12 @@ class HomePageSeeder extends Seeder
                 'type' => 'how_it_works',
                 'order' => 4,
                 'config' => [
-                    'eyebrow' => 'COMMENT CA MARCHE',
-                    'title' => 'Comment ca marche ?',
+                    'eyebrow' => 'COMMENT ÇA MARCHE',
+                    'title' => 'Comment ça marche ?',
                     'steps' => [
-                        ['title' => 'Verifier', 'text' => 'Fournissez les documents necessaires pour verifier votre identite et securiser la transaction.'],
+                        ['title' => 'Vérifier', 'text' => 'Fournissez les documents nécessaires pour vérifier votre identité et sécuriser la transaction.'],
                         ['title' => 'Rechercher un bien', 'text' => 'Utilisez nos outils de recherche pour filtrer les biens selon la localisation, le prix, la taille et bien plus.'],
-                        ['title' => 'Concretiser', 'text' => 'Une fois votre bien ideal trouve, soumettez votre offre directement depuis la plateforme.'],
+                        ['title' => 'Concrétiser', 'text' => 'Une fois votre bien idéal trouvé, soumettez votre offre directement depuis la plateforme.'],
                     ],
                 ],
             ],
@@ -60,12 +60,12 @@ class HomePageSeeder extends Seeder
                 'order' => 5,
                 'config' => [
                     'eyebrow' => 'EXPLORE',
-                    'title' => 'Decouvrez nos derniers biens',
+                    'title' => 'Découvrez nos derniers biens',
                     'source' => 'latest',
                     'limit' => 3,
                     'show_intro_card' => true,
-                    'intro_title' => 'Nouvelles opportunites',
-                    'intro_text' => "Restez a l'affut de nos dernieres annonces et trouvez le bien qui vous correspond.",
+                    'intro_title' => 'Nouvelles opportunités',
+                    'intro_text' => "Restez à l'affût de nos dernières annonces et trouvez le bien qui vous correspond.",
                 ],
             ],
             [
@@ -73,7 +73,7 @@ class HomePageSeeder extends Seeder
                 'order' => 6,
                 'config' => [
                     'eyebrow' => 'POPULAR',
-                    'title' => 'Meilleurs biens a louer',
+                    'title' => 'Meilleurs biens à louer',
                     'source' => 'rent',
                     'limit' => 4,
                     'show_intro_card' => false,
@@ -84,7 +84,7 @@ class HomePageSeeder extends Seeder
                 'order' => 7,
                 'config' => [
                     'eyebrow' => 'FAQ',
-                    'title' => 'Questions frequentes',
+                    'title' => 'Questions fréquentes',
                 ],
             ],
             [
@@ -92,7 +92,7 @@ class HomePageSeeder extends Seeder
                 'order' => 8,
                 'config' => [
                     'eyebrow' => 'CONTACT',
-                    'title' => 'Vous ne savez pas par ou commencer ? Contactez-nous et remplissez le formulaire.',
+                    'title' => 'Vous ne savez pas par où commencer ? Contactez-nous et remplissez le formulaire.',
                     'subtitle' => 'Contactez-nous et dites-nous ce dont vous avez besoin.',
                 ],
             ],
@@ -104,7 +104,7 @@ class HomePageSeeder extends Seeder
                         ['label' => 'Vendre un bien', 'href' => '#'],
                         ['label' => 'Acheter un bien', 'href' => '#'],
                         ['label' => 'Louer', 'href' => '#'],
-                        ['label' => 'A propos', 'href' => '#'],
+                        ['label' => 'À propos', 'href' => '#'],
                         ['label' => 'Ressources', 'href' => '#'],
                     ],
                     'social_links' => [
