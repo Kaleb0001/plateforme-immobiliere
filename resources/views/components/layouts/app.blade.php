@@ -1,3 +1,4 @@
+@props(['hideHeader' => false])
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,21 +13,30 @@
     @livewireStyles
 </head>
 <body class="antialiased">
-    {{-- Navigation minimale et fonctionnelle - remplacee par le vrai header
-         pixel-perfect de la maquette au module 6. --}}
-    <nav class="flex items-center justify-end gap-4 px-6 py-4 text-sm">
-        @guest
-            <a href="{{ route('login') }}">Connexion</a>
-            <a href="{{ route('register') }}">Inscription</a>
-        @endguest
-        @auth
-            <a href="{{ route('account') }}">Mon compte</a>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit">Se deconnecter</button>
-            </form>
-        @endauth
-    </nav>
+    @unless ($hideHeader)
+        {{-- Header par defaut pour les pages sans hero photo (connexion, mon compte...).
+             La page d'accueil affiche son propre header transparent dans le hero. --}}
+        <header class="flex items-center justify-between px-6 py-5 sm:px-12">
+            <a href="{{ route('home') }}" class="text-lg font-bold tracking-wide">VOTRE-MARQUE</a>
+
+            @guest
+                <a href="{{ route('login') }}" class="rounded-[var(--radius-pill)] border border-[color:var(--color-border)] px-5 py-2 text-sm">
+                    Connexion
+                </a>
+            @endguest
+            @auth
+                <div class="flex items-center gap-4 text-sm">
+                    <a href="{{ route('account') }}">Mon compte</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="rounded-[var(--radius-pill)] border border-[color:var(--color-border)] px-5 py-2">
+                            Deconnexion
+                        </button>
+                    </form>
+                </div>
+            @endauth
+        </header>
+    @endunless
 
     {{ $slot }}
 
