@@ -1,14 +1,8 @@
 @props(['property'])
 
-{{--
-    Carte de bien interactive : l'icone (chevron dans un bouton toujours borde,
-    comme sur la FAQ) bascule entre la vue photo et une vue description sur fond
-    sombre. Un bien marque "a la une" s'affiche deplie par defaut (comme "Happy
-    Lagoon Farm" sur la maquette), tout en restant repliable au clic.
---}}
 <div
     x-data="{ expanded: {{ $property->featured ? 'true' : 'false' }} }"
-    class="h-full overflow-hidden rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] shadow-[var(--shadow-card)]"
+    class="group h-full overflow-hidden rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] shadow-[var(--shadow-card)] transition duration-300 hover:-translate-y-1 hover:shadow-lg"
 >
     <div x-show="!expanded" x-transition.opacity.duration.300ms>
         <div class="relative aspect-[4/3] overflow-hidden bg-neutral-100">
@@ -16,7 +10,7 @@
                 <img
                     src="{{ $property->getFirstMediaUrl('gallery') }}"
                     alt="{{ $property->title }}"
-                    class="h-full w-full object-cover"
+                    class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                 >
             @else
                 <div class="flex h-full w-full items-center justify-center text-[color:var(--color-ink-secondary)]">
@@ -26,7 +20,7 @@
 
             <button
                 type="button"
-                class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[color:var(--color-ink)]"
+                class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[color:var(--color-ink)] transition hover:bg-white"
                 aria-label="Ajouter aux favoris"
             >
                 <x-ui.icon name="heart" class="h-4 w-4" />
@@ -39,7 +33,7 @@
                 <button
                     type="button"
                     @click="expanded = true"
-                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[color:var(--color-border)]"
+                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[color:var(--color-border)] transition hover:bg-neutral-100"
                     aria-label="Voir la description"
                 >
                     <x-ui.icon name="chevron-down" class="h-4 w-4" />
@@ -67,7 +61,7 @@
                 <button
                     type="button"
                     @click="expanded = false"
-                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/30"
+                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/30 transition hover:bg-white/10"
                     aria-label="Voir la photo"
                 >
                     <x-ui.icon name="chevron-down" class="h-4 w-4 -rotate-180" />

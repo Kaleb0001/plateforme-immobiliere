@@ -13,7 +13,7 @@
         <button
             type="button"
             @click="scrollByAmount(-320)"
-            class="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-border)]"
+            class="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-border)] transition hover:bg-[color:var(--color-ink)] hover:text-white"
             aria-label="Précédent"
         >
             <x-ui.icon name="chevron-left" class="h-4 w-4" />
@@ -21,7 +21,7 @@
         <button
             type="button"
             @click="scrollByAmount(320)"
-            class="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-border)]"
+            class="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-border)] transition hover:bg-[color:var(--color-ink)] hover:text-white"
             aria-label="Suivant"
         >
             <x-ui.icon name="chevron-right" class="h-4 w-4" />

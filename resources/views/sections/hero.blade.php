@@ -10,20 +10,20 @@
                 <span class="text-lg font-bold tracking-wide text-white">VOTRE-MARQUE</span>
 
                 <nav class="hidden items-center gap-6 text-sm text-white/90 lg:flex">
-                    <a href="#">Vendre un bien</a>
-                    <a href="#">Acheter un bien</a>
-                    <a href="#">Louer</a>
-                    <a href="#">À propos</a>
-                    <a href="#">Ressources</a>
+                    <a href="#" class="transition hover:text-white">Vendre un bien</a>
+                    <a href="#" class="transition hover:text-white">Acheter un bien</a>
+                    <a href="#" class="transition hover:text-white">Louer</a>
+                    <a href="#" class="transition hover:text-white">À propos</a>
+                    <a href="#" class="transition hover:text-white">Ressources</a>
                 </nav>
 
                 @guest
-                    <a href="{{ route('login') }}" class="rounded-[var(--radius-pill)] border border-white/50 px-5 py-2 text-sm text-white">
+                    <a href="{{ route('login') }}" class="rounded-[var(--radius-pill)] border border-white/50 px-5 py-2 text-sm text-white transition hover:bg-white hover:text-[color:var(--color-ink)]">
                         Connexion
                     </a>
                 @endguest
                 @auth
-                    <a href="{{ route('account') }}" class="rounded-[var(--radius-pill)] border border-white/50 px-5 py-2 text-sm text-white">
+                    <a href="{{ route('account') }}" class="rounded-[var(--radius-pill)] border border-white/50 px-5 py-2 text-sm text-white transition hover:bg-white hover:text-[color:var(--color-ink)]">
                         Mon compte
                     </a>
                 @endauth
