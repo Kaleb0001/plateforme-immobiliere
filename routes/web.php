@@ -48,11 +48,15 @@ Route::get('/', function () {
         return $entry;
     });
 
+    $featuredProperty = Property::where('featured', true)->first();
+
     return view('home', [
+        'page' => $page,
         'sectionsData' => $sectionsData,
         'cities' => City::orderBy('name')->get(),
         'propertyTypes' => PropertyType::orderBy('name')->get(),
         'propertyStyles' => PropertyStyle::orderBy('name')->get(),
+        'ogImage' => $featuredProperty?->getFirstMediaUrl('gallery') ?: null,
     ]);
 })->name('home');
 
@@ -71,6 +75,34 @@ Route::middleware('auth')->group(function () {
 
         return redirect('/');
     })->name('logout');
+});
+
+// SEO technique : sitemap et robots.txt generes dynamiquement (refletent
+// toujours la vraie APP_URL de l'environnement, contrairement a des fichiers
+// statiques). Le sitemap ne liste pour l'instant que les pages qui existent
+// reellement ; les biens y seront ajoutes des que les fiches individuelles
+// existeront (module 10).
+Route::get('/sitemap.xml', function () {
+    $urls = collect([
+        ['loc' => url('/'), 'changefreq' => 'daily', 'priority' => '1.0'],
+    ]);
+
+    return response()
+        ->view('sitemap', ['urls' => $urls])
+        ->header('Content-Type', 'text/xml');
+})->name('sitemap');
+
+Route::get('/robots.txt', function () {
+    $lines = [
+        'User-agent: *',
+        'Allow: /',
+        'Disallow: /admin',
+        'Disallow: /dev',
+        '',
+        'Sitemap: ' . route('sitemap'),
+    ];
+
+    return response(implode("\n", $lines))->header('Content-Type', 'text/plain');
 });
 
 // Page de developpement (vitrine des composants) - non destinee au public,

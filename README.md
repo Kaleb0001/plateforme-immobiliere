@@ -1,30 +1,28 @@
-# Module 8 — Finitions animations/transitions
+# Module 9 — SEO technique
 
 ## Ce qui a été ajouté
 
-**En-tête qui apparaît au défilement** — sur la page d'accueil, l'en-tête transparent du hero disparaît normalement avec le scroll comme sur la maquette. Un second en-tête (fond clair, flou d'arrière-plan) apparaît en fondu dès qu'on défile au-delà du hero, pour garder la navigation accessible partout sur la page. Sur les autres pages (connexion, mon compte), l'en-tête par défaut est maintenant `sticky` : il reste visible en haut pendant le défilement.
+**Métadonnées par page** : titre, description, URL canonique, Open Graph et Twitter Card — tirés directement des champs `meta_title`/`meta_description` de la page (déjà dans le modèle de données depuis le module 3, maintenant réellement utilisés). L'image Open Graph utilise la photo du bien "à la une" quand elle existe.
 
-**Effets de survol** :
-- Cartes de biens : léger effet de "lift" (ombre + décalage vers le haut) et zoom doux sur la photo au survol
-- Boutons, liens de navigation, flèches de carrousel, icônes de favoris : transitions de couleur/fond fluides au survol plutôt que des changements brusques
+**Données structurées (JSON-LD)** : schémas `Organization` et `WebSite` sur toutes les pages, pour que Google identifie correctement le site. Les schémas `RealEstateListing` par bien viendront naturellement avec les fiches individuelles (module 10) — pas encore de fiche bien à décrire pour l'instant.
+
+**Sitemap et robots.txt**, générés dynamiquement (pas des fichiers statiques, donc toujours corrects quel que soit l'environnement) :
+- `/sitemap.xml` — ne liste que l'accueil pour l'instant, volontairement : y ajouter des URLs de fiches biens qui n'existent pas encore (module 10) créerait des erreurs 404 pour Google. Structure prête à étendre.
+- `/robots.txt` — autorise tout sauf `/admin` et `/dev`, pointe vers le sitemap.
+
+**Performance** : chargement différé (`loading="lazy"`) sur les photos de biens et le bien vedette, qui ne sont pas visibles au premier écran — évite de ralentir l'affichage initial de la page.
 
 ## Fichiers de ce module (6 fichiers, zip)
-Tous remplacent des fichiers déjà livrés — aucun nouveau fichier, uniquement des ajouts de classes et un bloc d'en-tête flottant.
-
-- `resources/views/home.blade.php`
-- `resources/views/components/layouts/app.blade.php`
-- `resources/views/components/ui/property-card.blade.php`
-- `resources/views/components/ui/carousel.blade.php`
-- `resources/views/sections/hero.blade.php`
-- `resources/views/sections/footer.blade.php`
+Tous remplacent des fichiers déjà livrés.
 
 ## Étapes chez toi
 ```bash
-# Copier les fichiers par-dessus les précédents
 composer run dev
 ```
 
-Aucune migration, aucun seeder à relancer cette fois. Défile sur la page d'accueil pour voir apparaître l'en-tête flottant, et survole les cartes/boutons pour vérifier les transitions.
+Rien à migrer. Vérifie `http://localhost:8000/sitemap.xml` et `http://localhost:8000/robots.txt`, et regarde le code source de l'accueil (`Ctrl+U` dans le navigateur) pour voir les balises `<meta>` et le `<script type="application/ld+json">` en tête de page.
 
-## Pas encore fait (à signaler si tu le veux dans ce module)
-Je n'ai pas touché à l'admin Filament (les transitions/animations de Filament sont gérées par le framework lui-même, pas par nous). Si tu penses à d'autres finitions précises en tête (autre chose qu'un problème que tu observes), dis-le-moi — sinon je considère le module 8 clos et on passe au SEO technique (module 9).
+## Pas encore fait (normal à ce stade)
+- Pas de `RealEstateListing` structuré individuel : nécessite une fiche bien (module 10)
+- Pas d'image Open Graph par défaut si aucun bien n'est "à la une" — à prévoir une fois que tu auras un logo/visuel de marque
+- Pas d'audit Lighthouse/Core Web Vitals formel : plus pertinent une fois le site quasi complet (prévu en fin de parcours, avec le module 11)

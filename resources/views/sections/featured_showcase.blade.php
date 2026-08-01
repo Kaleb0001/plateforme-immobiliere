@@ -14,7 +14,13 @@ $positionClasses = [
     <div class="relative overflow-hidden rounded-[var(--radius-card)] bg-neutral-200">
         <div class="aspect-[16/9]">
             @if ($property?->getFirstMediaUrl('gallery'))
-                <img src="{{ $property->getFirstMediaUrl('gallery') }}" alt="" class="h-full w-full object-cover">
+                <img
+                    src="{{ $property->getFirstMediaUrl('gallery') }}"
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    class="h-full w-full object-cover"
+                >
             @endif
         </div>
 
@@ -37,10 +43,10 @@ $positionClasses = [
 
                 <div class="mt-4 flex items-center justify-between">
                     <div class="flex gap-2">
-                        <button type="button" class="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-border)]" aria-label="Précédent">
+                        <button type="button" class="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-border)] transition hover:bg-[color:var(--color-ink)] hover:text-white" aria-label="Précédent">
                             <x-ui.icon name="chevron-left" class="h-4 w-4" />
                         </button>
-                        <button type="button" class="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-border)]" aria-label="Suivant">
+                        <button type="button" class="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-border)] transition hover:bg-[color:var(--color-ink)] hover:text-white" aria-label="Suivant">
                             <x-ui.icon name="chevron-right" class="h-4 w-4" />
                         </button>
                     </div>

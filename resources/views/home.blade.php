@@ -1,4 +1,9 @@
-<x-layouts.app :hide-header="true">
+<x-layouts.app
+    :hide-header="true"
+    :meta-title="$page->meta_title"
+    :meta-description="$page->meta_description"
+    :og-image="$ogImage ?? null"
+>
     {{-- En-tete "sticky" : invisible en haut de page (le hero affiche deja son
          propre en-tete transparent sur la photo), apparait en fondu des qu'on
          a defile au-dela du hero pour garder la navigation accessible partout. --}}
