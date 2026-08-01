@@ -101,9 +101,9 @@ class HomePageSeeder extends Seeder
                 'order' => 9,
                 'config' => [
                     'nav_links' => [
-                        ['label' => 'Vendre un bien', 'href' => '#'],
-                        ['label' => 'Acheter un bien', 'href' => '#'],
-                        ['label' => 'Louer', 'href' => '#'],
+                        ['label' => 'Vendre un bien', 'href' => route('register')],
+                        ['label' => 'Acheter un bien', 'href' => route('properties.search', ['transaction' => 'vente'])],
+                        ['label' => 'Louer', 'href' => route('properties.search', ['transaction' => 'location'])],
                         ['label' => 'À propos', 'href' => '#'],
                         ['label' => 'Ressources', 'href' => '#'],
                     ],

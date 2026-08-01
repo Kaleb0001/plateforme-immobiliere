@@ -4,9 +4,6 @@
     :meta-description="$page->meta_description"
     :og-image="$ogImage ?? null"
 >
-    {{-- En-tete "sticky" : invisible en haut de page (le hero affiche deja son
-         propre en-tete transparent sur la photo), apparait en fondu des qu'on
-         a defile au-dela du hero pour garder la navigation accessible partout. --}}
     <div
         x-data="{ show: false }"
         x-init="window.addEventListener('scroll', () => { show = window.scrollY > 420 })"
@@ -23,9 +20,9 @@
         <a href="{{ route('home') }}" class="text-lg font-bold tracking-wide">VOTRE-MARQUE</a>
 
         <nav class="hidden items-center gap-6 text-sm text-[color:var(--color-ink-secondary)] lg:flex">
-            <a href="#" class="transition hover:text-[color:var(--color-ink)]">Vendre un bien</a>
-            <a href="#" class="transition hover:text-[color:var(--color-ink)]">Acheter un bien</a>
-            <a href="#" class="transition hover:text-[color:var(--color-ink)]">Louer</a>
+            <a href="{{ route('register') }}" class="transition hover:text-[color:var(--color-ink)]">Vendre un bien</a>
+            <a href="{{ route('properties.search', ['transaction' => 'vente']) }}" class="transition hover:text-[color:var(--color-ink)]">Acheter un bien</a>
+            <a href="{{ route('properties.search', ['transaction' => 'location']) }}" class="transition hover:text-[color:var(--color-ink)]">Louer</a>
             <a href="#" class="transition hover:text-[color:var(--color-ink)]">À propos</a>
             <a href="#" class="transition hover:text-[color:var(--color-ink)]">Ressources</a>
         </nav>

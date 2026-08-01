@@ -6,32 +6,32 @@
 >
     <div x-show="!expanded" x-transition.opacity.duration.300ms>
         <div class="relative aspect-[4/3] overflow-hidden bg-neutral-100">
-            @if ($property->getFirstMediaUrl('gallery'))
-                <img
-                    src="{{ $property->getFirstMediaUrl('gallery') }}"
-                    alt="{{ $property->title }}"
-                    loading="lazy"
-                    decoding="async"
-                    class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                >
-            @else
-                <div class="flex h-full w-full items-center justify-center text-[color:var(--color-ink-secondary)]">
-                    <x-ui.icon name="photo" class="h-10 w-10" />
-                </div>
-            @endif
+            <a href="{{ route('properties.show', $property) }}" class="absolute inset-0 block">
+                @if ($property->getFirstMediaUrl('gallery'))
+                    <img
+                        src="{{ $property->getFirstMediaUrl('gallery') }}"
+                        alt="{{ $property->title }}"
+                        loading="lazy"
+                        decoding="async"
+                        class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                    >
+                @else
+                    <div class="flex h-full w-full items-center justify-center text-[color:var(--color-ink-secondary)]">
+                        <x-ui.icon name="photo" class="h-10 w-10" />
+                    </div>
+                @endif
+            </a>
 
-            <button
-                type="button"
-                class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[color:var(--color-ink)] transition hover:bg-white"
-                aria-label="Ajouter aux favoris"
-            >
-                <x-ui.icon name="heart" class="h-4 w-4" />
-            </button>
+            <div class="absolute right-3 top-3">
+                <livewire:favorite-button :property="$property" :key="'fav-card-'.$property->id.'-'.uniqid()" />
+            </div>
         </div>
 
         <div class="space-y-2 p-4">
             <div class="flex items-start justify-between gap-2">
-                <h3 class="text-h3 font-semibold">{{ $property->title }}</h3>
+                <a href="{{ route('properties.show', $property) }}" class="text-h3 font-semibold transition hover:text-[color:var(--color-ink-secondary)]">
+                    {{ $property->title }}
+                </a>
                 <button
                     type="button"
                     @click="expanded = true"
@@ -78,6 +78,11 @@
             <p class="mt-3 text-sm text-white/80">{{ $property->description }}</p>
         </div>
 
-        <p class="pt-4 font-semibold">{{ number_format((float) $property->price, 2, ',', ' ') }} €</p>
+        <div class="flex items-center justify-between pt-4">
+            <a href="{{ route('properties.show', $property) }}" class="text-sm underline underline-offset-2">
+                Voir la fiche complète
+            </a>
+            <span class="font-semibold">{{ number_format((float) $property->price, 2, ',', ' ') }} €</span>
+        </div>
     </div>
 </div>

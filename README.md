@@ -1,28 +1,35 @@
-# Module 9 — SEO technique
+# Module 10, partie 2 — Recherche / résultats
 
-## Ce qui a été ajouté
+## Ce que contient cette livraison
 
-**Métadonnées par page** : titre, description, URL canonique, Open Graph et Twitter Card — tirés directement des champs `meta_title`/`meta_description` de la page (déjà dans le modèle de données depuis le module 3, maintenant réellement utilisés). L'image Open Graph utilise la photo du bien "à la une" quand elle existe.
+**Page de résultats** (`/biens`) : filtres réellement fonctionnels (transaction, ville, type, style, budget min/max), mise à jour en direct sans rechargement de page (Livewire), pagination, réinitialisation des filtres. Les critères sont dans l'URL (`/biens?transaction=vente&city_id=1...`), donc une recherche est partageable par lien.
 
-**Données structurées (JSON-LD)** : schémas `Organization` et `WebSite` sur toutes les pages, pour que Google identifie correctement le site. Les schémas `RealEstateListing` par bien viendront naturellement avec les fiches individuelles (module 10) — pas encore de fiche bien à décrire pour l'instant.
+**Le widget de recherche de l'accueil fonctionne enfin réellement** : il soumet vers `/biens` avec les bons filtres pré-remplis, au lieu d'être décoratif.
 
-**Sitemap et robots.txt**, générés dynamiquement (pas des fichiers statiques, donc toujours corrects quel que soit l'environnement) :
-- `/sitemap.xml` — ne liste que l'accueil pour l'instant, volontairement : y ajouter des URLs de fiches biens qui n'existent pas encore (module 10) créerait des erreurs 404 pour Google. Structure prête à étendre.
-- `/robots.txt` — autorise tout sauf `/admin` et `/dev`, pointe vers le sitemap.
+**Liens de navigation connectés** : "Acheter un bien" et "Louer" (en-tête du hero, en-tête flottant au scroll, footer) pointent maintenant vers la recherche filtrée correspondante ; "Vendre un bien" pointe vers l'inscription. "À propos" et "Ressources" restent en attente (dernière partie du module 10).
 
-**Performance** : chargement différé (`loading="lazy"`) sur les photos de biens et le bien vedette, qui ne sont pas visibles au premier écran — évite de ralentir l'affichage initial de la page.
-
-## Fichiers de ce module (6 fichiers, zip)
-Tous remplacent des fichiers déjà livrés.
+## Fichiers (7 fichiers, zip)
+- `app/Livewire/PropertySearch.php`, `resources/views/livewire/property-search.blade.php` — nouveaux
+- `resources/views/sections/hero.blade.php` — remplace (formulaire fonctionnel + liens)
+- `resources/views/home.blade.php` — remplace (liens de l'en-tête flottant)
+- `database/seeders/HomePageSeeder.php` — remplace (liens du footer)
+- `routes/web.php` — remplace (route `/biens`)
 
 ## Étapes chez toi
 ```bash
+# Copier les fichiers par-dessus les precedents
+
+php artisan migrate:fresh --seed
+
+# Reattribuer le role super_admin (perdu par le migrate:fresh)
+php artisan tinker
+>>> App\Models\User::where('email', 'admin@gmail.com')->first()->assignRole('super_admin');
+>>> exit
+
 composer run dev
 ```
 
-Rien à migrer. Vérifie `http://localhost:8000/sitemap.xml` et `http://localhost:8000/robots.txt`, et regarde le code source de l'accueil (`Ctrl+U` dans le navigateur) pour voir les balises `<meta>` et le `<script type="application/ld+json">` en tête de page.
+Teste depuis l'accueil : change la ville/le type dans le widget de recherche et clique "Rechercher" → tu arrives sur `/biens` avec les bons résultats déjà filtrés. Change encore les filtres sur cette page directement pour voir la mise à jour en direct.
 
-## Pas encore fait (normal à ce stade)
-- Pas de `RealEstateListing` structuré individuel : nécessite une fiche bien (module 10)
-- Pas d'image Open Graph par défaut si aucun bien n'est "à la une" — à prévoir une fois que tu auras un logo/visuel de marque
-- Pas d'audit Lighthouse/Core Web Vitals formel : plus pertinent une fois le site quasi complet (prévu en fin de parcours, avec le module 11)
+## Ce qu'il reste pour clore le module 10
+Espace client (favoris + suivi des soumissions) et page à propos. Dis-moi quand tu veux continuer.

@@ -10,9 +10,9 @@
                 <span class="text-lg font-bold tracking-wide text-white">VOTRE-MARQUE</span>
 
                 <nav class="hidden items-center gap-6 text-sm text-white/90 lg:flex">
-                    <a href="#" class="transition hover:text-white">Vendre un bien</a>
-                    <a href="#" class="transition hover:text-white">Acheter un bien</a>
-                    <a href="#" class="transition hover:text-white">Louer</a>
+                    <a href="{{ route('register') }}" class="transition hover:text-white">Vendre un bien</a>
+                    <a href="{{ route('properties.search', ['transaction' => 'vente']) }}" class="transition hover:text-white">Acheter un bien</a>
+                    <a href="{{ route('properties.search', ['transaction' => 'location']) }}" class="transition hover:text-white">Louer</a>
                     <a href="#" class="transition hover:text-white">À propos</a>
                     <a href="#" class="transition hover:text-white">Ressources</a>
                 </nav>
@@ -47,10 +47,18 @@
         </div>
     </div>
 
-    {{-- Widget de recherche : l'interface est fonctionnelle, mais la recherche/filtrage
-         reel (page de resultats) arrive au module 10. --}}
-    <div class="relative z-10 mx-4 -mt-24 rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-6 shadow-[var(--shadow-card)] sm:mx-auto sm:max-w-4xl sm:-mt-20">
-        <div x-data="{ tab: 'location' }" class="mb-6 inline-flex rounded-[var(--radius-pill)] bg-neutral-100 p-1">
+    {{-- Widget de recherche : soumission reelle vers la page de resultats
+         (route properties.search), en GET pour que la recherche soit partageable
+         par URL. --}}
+    <form
+        method="GET"
+        action="{{ route('properties.search') }}"
+        x-data="{ tab: 'location' }"
+        class="relative z-10 mx-4 -mt-24 rounded-[var(--radius-card)] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-6 shadow-[var(--shadow-card)] sm:mx-auto sm:max-w-4xl sm:-mt-20"
+    >
+        <input type="hidden" name="transaction" :value="tab === 'location' ? 'location' : 'vente'">
+
+        <div class="mb-6 inline-flex rounded-[var(--radius-pill)] bg-neutral-100 p-1">
             <button
                 type="button"
                 @click="tab = 'location'"
@@ -69,31 +77,31 @@
             </button>
         </div>
 
-        <form class="grid grid-cols-1 gap-4 sm:grid-cols-5 sm:items-end">
-            <x-form.select name="location" label="Localisation">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-5 sm:items-end">
+            <x-form.select name="city_id" label="Localisation">
                 <option value="">Toutes les villes</option>
                 @foreach ($cities as $city)
                     <option value="{{ $city->id }}">{{ $city->name }}</option>
                 @endforeach
             </x-form.select>
 
-            <x-form.select name="type" label="Type">
+            <x-form.select name="property_type_id" label="Type">
                 <option value="">Tous les types</option>
                 @foreach ($propertyTypes as $type)
                     <option value="{{ $type->id }}">{{ $type->name }}</option>
                 @endforeach
             </x-form.select>
 
-            <x-form.select name="style" label="Style">
+            <x-form.select name="property_style_id" label="Style">
                 <option value="">Tous les styles</option>
                 @foreach ($propertyStyles as $style)
                     <option value="{{ $style->id }}">{{ $style->name }}</option>
                 @endforeach
             </x-form.select>
 
-            <x-form.input name="price" label="Budget" placeholder="100k - 200k €" />
+            <x-form.input name="price_max" type="number" label="Budget max (€)" placeholder="200000" />
 
-            <x-form.button type="button" class="w-full justify-center">Rechercher</x-form.button>
-        </form>
-    </div>
+            <x-form.button class="w-full justify-center">Rechercher</x-form.button>
+        </div>
+    </form>
 </section>

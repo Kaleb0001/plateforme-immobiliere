@@ -5,6 +5,7 @@ use App\Enums\SectionType;
 use App\Enums\TransactionType;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
+use App\Livewire\PropertySearch;
 use App\Models\City;
 use App\Models\FaqItem;
 use App\Models\Page;
@@ -60,6 +61,25 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+// Recherche / resultats
+Route::get('/biens', PropertySearch::class)->name('properties.search');
+
+// Fiche bien
+Route::get('/biens/{property:slug}', function (Property $property) {
+    abort_unless($property->status === PropertyStatus::Publie, 404);
+
+    $similarProperties = Property::where('status', PropertyStatus::Publie->value)
+        ->where('id', '!=', $property->id)
+        ->when($property->city_id, fn ($query) => $query->where('city_id', $property->city_id))
+        ->limit(3)
+        ->get();
+
+    return view('properties.show', [
+        'property' => $property,
+        'similarProperties' => $similarProperties,
+    ]);
+})->name('properties.show');
+
 Route::middleware('guest')->group(function () {
     Route::get('/inscription', Register::class)->name('register');
     Route::get('/connexion', Login::class)->name('login');
@@ -77,15 +97,19 @@ Route::middleware('auth')->group(function () {
     })->name('logout');
 });
 
-// SEO technique : sitemap et robots.txt generes dynamiquement (refletent
-// toujours la vraie APP_URL de l'environnement, contrairement a des fichiers
-// statiques). Le sitemap ne liste pour l'instant que les pages qui existent
-// reellement ; les biens y seront ajoutes des que les fiches individuelles
-// existeront (module 10).
 Route::get('/sitemap.xml', function () {
     $urls = collect([
         ['loc' => url('/'), 'changefreq' => 'daily', 'priority' => '1.0'],
+        ['loc' => route('properties.search'), 'changefreq' => 'daily', 'priority' => '0.9'],
     ]);
+
+    Property::where('status', PropertyStatus::Publie->value)->each(function ($property) use ($urls) {
+        $urls->push([
+            'loc' => route('properties.show', $property),
+            'changefreq' => 'weekly',
+            'priority' => '0.8',
+        ]);
+    });
 
     return response()
         ->view('sitemap', ['urls' => $urls])
@@ -105,8 +129,6 @@ Route::get('/robots.txt', function () {
     return response(implode("\n", $lines))->header('Content-Type', 'text/plain');
 });
 
-// Page de developpement (vitrine des composants) - non destinee au public,
-// desactivee automatiquement en dehors de l'environnement local.
 if (app()->environment('local')) {
     Route::get('/dev/composants', function () {
         return view('dev.composants', [
