@@ -6,6 +6,7 @@ use App\Enums\TransactionType;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\PropertySearch;
+use App\Livewire\SubmitProperty;
 use App\Models\City;
 use App\Models\FaqItem;
 use App\Models\Page;
@@ -61,10 +62,10 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-// Recherche / resultats
+Route::get('/a-propos', fn () => view('about'))->name('about');
+
 Route::get('/biens', PropertySearch::class)->name('properties.search');
 
-// Fiche bien
 Route::get('/biens/{property:slug}', function (Property $property) {
     abort_unless($property->status === PropertyStatus::Publie, 404);
 
@@ -86,7 +87,16 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::view('/mon-compte', 'account')->name('account');
+    Route::get('/mon-compte', function () {
+        $user = Auth::user();
+
+        return view('account', [
+            'favorites' => $user->favoriteProperties()->with('city')->get(),
+            'submissions' => $user->submittedProperties()->latest()->get(),
+        ]);
+    })->name('account');
+
+    Route::get('/proposer-un-bien', SubmitProperty::class)->name('properties.submit');
 
     Route::post('/deconnexion', function () {
         Auth::logout();
@@ -101,6 +111,7 @@ Route::get('/sitemap.xml', function () {
     $urls = collect([
         ['loc' => url('/'), 'changefreq' => 'daily', 'priority' => '1.0'],
         ['loc' => route('properties.search'), 'changefreq' => 'daily', 'priority' => '0.9'],
+        ['loc' => route('about'), 'changefreq' => 'monthly', 'priority' => '0.5'],
     ]);
 
     Property::where('status', PropertyStatus::Publie->value)->each(function ($property) use ($urls) {

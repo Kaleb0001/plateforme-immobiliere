@@ -13,7 +13,7 @@
                     <a href="{{ route('register') }}" class="transition hover:text-white">Vendre un bien</a>
                     <a href="{{ route('properties.search', ['transaction' => 'vente']) }}" class="transition hover:text-white">Acheter un bien</a>
                     <a href="{{ route('properties.search', ['transaction' => 'location']) }}" class="transition hover:text-white">Louer</a>
-                    <a href="#" class="transition hover:text-white">À propos</a>
+                    <a href="{{ route('about') }}" class="transition hover:text-white">À propos</a>
                     <a href="#" class="transition hover:text-white">Ressources</a>
                 </nav>
 
