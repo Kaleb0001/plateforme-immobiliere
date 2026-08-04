@@ -1,28 +1,37 @@
-# Module 9 — SEO technique
+# Module 10, partie 3 — Espace client et À propos (clôture du module 10)
 
-## Ce qui a été ajouté
+## Ce que contient cette livraison
 
-**Métadonnées par page** : titre, description, URL canonique, Open Graph et Twitter Card — tirés directement des champs `meta_title`/`meta_description` de la page (déjà dans le modèle de données depuis le module 3, maintenant réellement utilisés). L'image Open Graph utilise la photo du bien "à la une" quand elle existe.
+**Espace client réel** (`/mon-compte`) : affiche enfin les vrais favoris (cartes de biens) et le suivi des biens soumis avec leur statut (badge coloré), et le motif si refusé.
 
-**Données structurées (JSON-LD)** : schémas `Organization` et `WebSite` sur toutes les pages, pour que Google identifie correctement le site. Les schémas `RealEstateListing` par bien viendront naturellement avec les fiches individuelles (module 10) — pas encore de fiche bien à décrire pour l'instant.
+**Formulaire de soumission d'un bien** (`/proposer-un-bien`, connexion requise) : le formulaire allégé qu'on avait prévu dès le cahier des charges — titre, description, transaction, ville, type, prix, photos (optionnelles). À la soumission, le bien est créé avec le statut "en attente de validation" et apparaît dans la file de modération de l'admin (module 7) ainsi que dans l'espace personnel du client.
 
-**Sitemap et robots.txt**, générés dynamiquement (pas des fichiers statiques, donc toujours corrects quel que soit l'environnement) :
-- `/sitemap.xml` — ne liste que l'accueil pour l'instant, volontairement : y ajouter des URLs de fiches biens qui n'existent pas encore (module 10) créerait des erreurs 404 pour Google. Structure prête à étendre.
-- `/robots.txt` — autorise tout sauf `/admin` et `/dev`, pointe vers le sitemap.
+**Page À propos** (`/a-propos`) : structure complète (mission, 3 points forts, appel à l'action vers la recherche), mais avec du contenu placeholder clairement marqué `[À compléter]` — je n'ai pas inventé d'historique, d'effectifs ou de chiffres vous concernant. À personnaliser avec vos vrais textes.
 
-**Performance** : chargement différé (`loading="lazy"`) sur les photos de biens et le bien vedette, qui ne sont pas visibles au premier écran — évite de ralentir l'affichage initial de la page.
+**Liens "À propos"** connectés partout (en-tête du hero, en-tête flottant, footer) — tous les liens de navigation du site pointent maintenant vers de vraies pages. Module 10 est complet.
 
-## Fichiers de ce module (6 fichiers, zip)
-Tous remplacent des fichiers déjà livrés.
+## Fichiers (8 fichiers, zip)
+- `app/Livewire/SubmitProperty.php`, `resources/views/livewire/submit-property.blade.php` — nouveaux
+- `resources/views/about.blade.php` — nouveau
+- `resources/views/account.blade.php` — remplace (vrai tableau de bord)
+- `resources/views/sections/hero.blade.php`, `resources/views/home.blade.php` — remplacent (lien À propos)
+- `database/seeders/HomePageSeeder.php` — remplace (lien À propos dans le footer)
+- `routes/web.php` — remplace (nouvelles routes)
 
 ## Étapes chez toi
 ```bash
+# Copier les fichiers par-dessus les précédents
+
+php artisan migrate:fresh --seed
+
+php artisan tinker
+>>> App\Models\User::where('email', 'admin@gmail.com')->first()->assignRole('super_admin');
+>>> exit
+
 composer run dev
 ```
 
-Rien à migrer. Vérifie `http://localhost:8000/sitemap.xml` et `http://localhost:8000/robots.txt`, et regarde le code source de l'accueil (`Ctrl+U` dans le navigateur) pour voir les balises `<meta>` et le `<script type="application/ld+json">` en tête de page.
+Teste en te connectant avec un compte client (ou en créant un compte via `/inscription`) : soumets un bien depuis `/proposer-un-bien`, vérifie qu'il apparaît dans `/mon-compte` avec le statut "en attente de validation", puis approuve/refuse-le depuis l'admin (`/admin/properties`) et reviens vérifier le changement de statut côté client.
 
-## Pas encore fait (normal à ce stade)
-- Pas de `RealEstateListing` structuré individuel : nécessite une fiche bien (module 10)
-- Pas d'image Open Graph par défaut si aucun bien n'est "à la une" — à prévoir une fois que tu auras un logo/visuel de marque
-- Pas d'audit Lighthouse/Core Web Vitals formel : plus pertinent une fois le site quasi complet (prévu en fin de parcours, avec le module 11)
+## Module 10 terminé
+Recherche/résultats, fiche bien, espace client avec soumission fonctionnelle, à propos : les 4 pages sont là. Reste le module 11 (tests, QA responsive/accessibilité, déploiement) — et la revue générale que tu voulais garder pour la fin, maintenant que tout le parcours est construit.
