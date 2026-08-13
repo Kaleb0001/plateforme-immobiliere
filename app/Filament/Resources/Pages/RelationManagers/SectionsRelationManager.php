@@ -9,6 +9,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
@@ -45,6 +46,15 @@ class SectionsRelationManager extends RelationManager
                 TextInput::make('order')->label('Ordre')->numeric()->default(0)->required(),
                 Toggle::make('visible')->label('Visible')->default(true),
 
+                SpatieMediaLibraryFileUpload::make('background_image')
+                    ->collection('background_image')
+                    ->image()
+                    ->maxSize(8192)
+                    ->label('Photo de fond')
+                    ->helperText('Recommandé : image large (min. 1600px de large). Un dégradé de réserve est utilisé tant qu\'aucune photo n\'est définie.')
+                    ->visible(fn ($get) => in_array($get('type'), ['hero', 'footer']))
+                    ->columnSpanFull(),
+
                 TextInput::make('config.headline_strong_1')->label('Titre (gras) - partie 1')
                     ->visible(fn ($get) => $get('type') === 'hero'),
                 TextInput::make('config.headline_light_1')->label('Titre (atténué) - partie 1')
@@ -55,6 +65,10 @@ class SectionsRelationManager extends RelationManager
                     ->visible(fn ($get) => $get('type') === 'hero'),
                 Textarea::make('config.subtitle')->label('Sous-titre')
                     ->visible(fn ($get) => in_array($get('type'), ['hero', 'contact'])),
+                TextInput::make('config.tag_1')->label('Badge flottant gauche (ex. Acheter un bien)')
+                    ->visible(fn ($get) => $get('type') === 'hero'),
+                TextInput::make('config.tag_2')->label('Badge flottant droit (ex. Vendre un bien)')
+                    ->visible(fn ($get) => $get('type') === 'hero'),
 
                 TextInput::make('config.eyebrow')->label('Étiquette (ex. A PROPOS)')
                     ->visible(fn ($get) => in_array($get('type'), ['about', 'how_it_works', 'property_grid', 'faq', 'contact'])),
@@ -83,6 +97,23 @@ class SectionsRelationManager extends RelationManager
                     ->visible(fn ($get) => $get('type') === 'property_grid'),
                 Textarea::make('config.intro_text')->label("Texte de la carte d'intro")
                     ->visible(fn ($get) => $get('type') === 'property_grid'),
+
+                Repeater::make('config.nav_links')->label('Liens de navigation')
+                    ->schema([
+                        TextInput::make('label')->label('Libellé')->required(),
+                        TextInput::make('href')->label('Lien (URL ou chemin)')->required(),
+                    ])
+                    ->columns(2)
+                    ->addActionLabel('Ajouter un lien')
+                    ->visible(fn ($get) => $get('type') === 'footer'),
+                Repeater::make('config.social_links')->label('Réseaux sociaux')
+                    ->schema([
+                        TextInput::make('label')->label('Libellé (ex. Instagram)')->required(),
+                        TextInput::make('href')->label('Lien (URL)')->required(),
+                    ])
+                    ->columns(2)
+                    ->addActionLabel('Ajouter un réseau')
+                    ->visible(fn ($get) => $get('type') === 'footer'),
             ]);
     }
 

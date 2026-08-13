@@ -3,10 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\Page;
+use Database\Seeders\Concerns\GeneratesPlaceholderImages;
 use Illuminate\Database\Seeder;
 
 class HomePageSeeder extends Seeder
 {
+    use GeneratesPlaceholderImages;
+
     public function run(): void
     {
         $page = Page::firstOrCreate(
@@ -101,10 +104,10 @@ class HomePageSeeder extends Seeder
                 'order' => 9,
                 'config' => [
                     'nav_links' => [
-                        ['label' => 'Vendre un bien', 'href' => route('register')],
-                        ['label' => 'Acheter un bien', 'href' => route('properties.search', ['transaction' => 'vente'])],
-                        ['label' => 'Louer', 'href' => route('properties.search', ['transaction' => 'location'])],
-                        ['label' => 'À propos', 'href' => route('about')],
+                        ['label' => 'Vendre un bien', 'href' => route('register', absolute: false)],
+                        ['label' => 'Acheter un bien', 'href' => route('properties.search', ['transaction' => 'vente'], absolute: false)],
+                        ['label' => 'Louer', 'href' => route('properties.search', ['transaction' => 'location'], absolute: false)],
+                        ['label' => 'À propos', 'href' => route('about', absolute: false)],
                         ['label' => 'Ressources', 'href' => '#'],
                     ],
                     'social_links' => [
@@ -117,10 +120,23 @@ class HomePageSeeder extends Seeder
         ];
 
         foreach ($sections as $sectionData) {
-            $page->sections()->updateOrCreate(
+            $section = $page->sections()->updateOrCreate(
                 ['type' => $sectionData['type'], 'order' => $sectionData['order']],
                 ['config' => $sectionData['config'], 'visible' => true]
             );
+
+            // Photo de fond de demonstration pour le hero (a remplacer par une
+            // vraie photo depuis l'admin : Pages > Accueil > section Hero).
+            if ($sectionData['type'] === 'hero' && $section->getMedia('background_image')->isEmpty()) {
+                try {
+                    $path = $this->generatePlaceholderImage('hero-'.$section->id, 2000, 1200);
+                    $section->addMedia($path)
+                        ->usingFileName('hero-demo.jpg')
+                        ->toMediaCollection('background_image');
+                } catch (\Throwable $e) {
+                    $this->command?->warn("Photo de fond du hero non générée : {$e->getMessage()}");
+                }
+            }
         }
     }
 }

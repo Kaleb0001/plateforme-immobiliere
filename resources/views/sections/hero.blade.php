@@ -1,32 +1,26 @@
-@php $config = $section->config ?? []; @endphp
+@php
+    $config = $section->config ?? [];
+    $backgroundUrl = $section->backgroundImageUrl();
+@endphp
 
 <section class="relative overflow-hidden">
-    <div class="relative mx-4 mt-4 overflow-hidden rounded-[var(--radius-card)] bg-gradient-to-b from-sky-300 to-sky-100 sm:mx-6 sm:mt-6">
-        {{-- Photo de fond a brancher une fois la mediatheque en place (module 7).
-             Le degrade sert de reserve visuelle en attendant. --}}
+    <div
+        @class([
+            'relative mx-4 mt-4 overflow-hidden rounded-[var(--radius-card)] bg-cover bg-center sm:mx-6 sm:mt-6',
+            'bg-gradient-to-b from-sky-300 to-sky-100' => ! $backgroundUrl,
+        ])
+        @style([
+            "background-image: linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.35)), url('{$backgroundUrl}')" => $backgroundUrl,
+        ])
+    >
+        {{-- Photo de fond geree depuis l'admin (Pages > Accueil > section Hero > Photo de fond).
+             A defaut de photo definie, un degrade sert de reserve visuelle. --}}
 
         <div class="relative px-6 pb-36 pt-8 sm:px-12 sm:pb-44">
             <div class="flex items-center justify-between">
-                <span class="text-lg font-bold tracking-wide text-white">VOTRE-MARQUE</span>
+                <a href="{{ route('home') }}" class="text-lg font-bold tracking-wide text-white">{{ config('app.name') }}</a>
 
-                <nav class="hidden items-center gap-6 text-sm text-white/90 lg:flex">
-                    <a href="{{ route('register') }}" class="transition hover:text-white">Vendre un bien</a>
-                    <a href="{{ route('properties.search', ['transaction' => 'vente']) }}" class="transition hover:text-white">Acheter un bien</a>
-                    <a href="{{ route('properties.search', ['transaction' => 'location']) }}" class="transition hover:text-white">Louer</a>
-                    <a href="{{ route('about') }}" class="transition hover:text-white">À propos</a>
-                    <a href="#" class="transition hover:text-white">Ressources</a>
-                </nav>
-
-                @guest
-                    <a href="{{ route('login') }}" class="rounded-[var(--radius-pill)] border border-white/50 px-5 py-2 text-sm text-white transition hover:bg-white hover:text-[color:var(--color-ink)]">
-                        Connexion
-                    </a>
-                @endguest
-                @auth
-                    <a href="{{ route('account') }}" class="rounded-[var(--radius-pill)] border border-white/50 px-5 py-2 text-sm text-white transition hover:bg-white hover:text-[color:var(--color-ink)]">
-                        Mon compte
-                    </a>
-                @endauth
+                <x-layouts.site-nav :dark="true" />
             </div>
 
             <div class="relative mt-16 max-w-2xl" x-reveal>

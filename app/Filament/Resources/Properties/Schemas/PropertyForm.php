@@ -121,7 +121,9 @@ class PropertyForm
                     ->image()
                     ->multiple()
                     ->reorderable()
+                    ->maxSize(5120)
                     ->label('Photos')
+                    ->helperText('Formats image uniquement, 5 Mo maximum par fichier.')
                     ->columnSpanFull(),
 
                 TextInput::make('meta_title')->label('Titre SEO (optionnel)'),

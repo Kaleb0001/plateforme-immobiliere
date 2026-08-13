@@ -21,6 +21,9 @@ class PropertySearch extends Component
     public string $transaction = 'location';
 
     #[Url]
+    public ?string $keyword = null;
+
+    #[Url]
     public ?int $city_id = null;
 
     #[Url]
@@ -42,22 +45,37 @@ class PropertySearch extends Component
 
     public function resetFilters(): void
     {
-        $this->reset(['city_id', 'property_type_id', 'property_style_id', 'price_min', 'price_max']);
+        $this->reset(['keyword', 'city_id', 'property_type_id', 'property_style_id', 'price_min', 'price_max']);
         $this->resetPage();
     }
 
-    public function render()
+    /**
+     * Contraintes communes appliquees que la recherche passe par Scout
+     * (mot-cle renseigne) ou par une requete Eloquent classique (parcours
+     * par filtres uniquement).
+     */
+    private function applyFilters($query)
     {
-        $properties = Property::query()
+        return $query
+            ->with(['city', 'media'])
             ->where('status', PropertyStatus::Publie->value)
             ->where('transaction_type', $this->transaction)
             ->when($this->city_id, fn ($q) => $q->where('city_id', $this->city_id))
             ->when($this->property_type_id, fn ($q) => $q->where('property_type_id', $this->property_type_id))
             ->when($this->property_style_id, fn ($q) => $q->where('property_style_id', $this->property_style_id))
             ->when($this->price_min, fn ($q) => $q->where('price', '>=', $this->price_min))
-            ->when($this->price_max, fn ($q) => $q->where('price', '<=', $this->price_max))
-            ->latest('id')
-            ->paginate(9);
+            ->when($this->price_max, fn ($q) => $q->where('price', '<=', $this->price_max));
+    }
+
+    public function render()
+    {
+        // Un mot-cle renseigne passe par Scout (recherche plein texte sur
+        // titre/description/ville/type) ; sinon parcours par filtres classique.
+        $properties = $this->keyword
+            ? Property::search($this->keyword)
+                ->query(fn ($query) => $this->applyFilters($query))
+                ->paginate(9)
+            : $this->applyFilters(Property::query())->latest('id')->paginate(9);
 
         return view('livewire.property-search', [
             'properties' => $properties,

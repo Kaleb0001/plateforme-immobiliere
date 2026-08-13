@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Scout\Searchable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -72,6 +73,51 @@ class Property extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('gallery');
+    }
+
+    /**
+     * Conversions d'images pour la performance/SEO (Core Web Vitals) :
+     * format WebP + tailles adaptees a chaque contexte d'affichage, plutot
+     * que de servir le fichier original (potentiellement plusieurs Mo) a
+     * l'identique sur toutes les tailles d'ecran.
+     * ->nonQueued() : generees immediatement a l'upload, sans dependre d'un
+     * worker de file d'attente actif (plus fiable en environnement local).
+     */
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('card')
+            ->width(640)
+            ->height(480)
+            ->format('webp')
+            ->quality(80)
+            ->nonQueued();
+
+        $this->addMediaConversion('detail')
+            ->width(1600)
+            ->format('webp')
+            ->quality(85)
+            ->nonQueued();
+    }
+
+    /**
+     * URL d'affichage d'une conversion avec repli gracieux : si la
+     * conversion demandee n'a pas ete generee (media ajoute avant son
+     * enregistrement, echec de generation...), on retombe sur le fichier
+     * original plutot que de casser l'affichage.
+     */
+    public function imageUrl(string $conversion = ''): ?string
+    {
+        $media = $this->getFirstMedia('gallery');
+
+        if (! $media) {
+            return null;
+        }
+
+        if ($conversion && $media->hasGeneratedConversion($conversion)) {
+            return $media->getUrl($conversion);
+        }
+
+        return $media->getUrl();
     }
 
     /**

@@ -7,9 +7,9 @@
     <div x-show="!expanded" x-transition.opacity.duration.300ms>
         <div class="relative aspect-[4/3] overflow-hidden bg-neutral-100">
             <a href="{{ route('properties.show', $property) }}" class="absolute inset-0 block">
-                @if ($property->getFirstMediaUrl('gallery'))
+                @if ($property->imageUrl('card'))
                     <img
-                        src="{{ $property->getFirstMediaUrl('gallery') }}"
+                        src="{{ $property->imageUrl('card') }}"
                         alt="{{ $property->title }}"
                         loading="lazy"
                         decoding="async"

@@ -1,7 +1,16 @@
 <div class="mx-auto max-w-6xl px-6 py-10 sm:px-12">
     <h1 class="text-h2 font-semibold">Rechercher un bien</h1>
 
-    <div class="mt-6 grid grid-cols-1 gap-4 rounded-[var(--radius-card)] border border-[color:var(--color-border)] p-6 sm:grid-cols-3 lg:grid-cols-6">
+    <div class="mt-6">
+        <x-form.input
+            name="keyword"
+            label="Mot-clé (ville, titre, description...)"
+            placeholder="Ex. villa avec vue mer, studio centre-ville..."
+            wire:model.live.debounce.400ms="keyword"
+        />
+    </div>
+
+    <div class="mt-4 grid grid-cols-1 gap-4 rounded-[var(--radius-card)] border border-[color:var(--color-border)] p-6 sm:grid-cols-3 lg:grid-cols-6">
         <div>
             <label class="text-sm font-medium">Transaction</label>
             <div class="mt-1 inline-flex w-full rounded-[var(--radius-pill)] bg-neutral-100 p-1">

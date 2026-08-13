@@ -10,4 +10,25 @@
     background-color: var(--color-background);
     color: var(--color-ink);
   }
+
+  /* Sans cette regle, x-cloak (utilise sur plusieurs composants) ne masque
+     rien : Alpine ne fournit pas ce style par defaut, il doit etre fourni
+     par l'application. Evite un flash de contenu non bascule avant
+     l'hydratation d'Alpine. */
+  [x-cloak] {
+    display: none !important;
+  }
+
+  /* Respect du confort de lecture : coupe les animations/transitions pour
+     les personnes ayant active "reduire les animations" au niveau systeme. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
