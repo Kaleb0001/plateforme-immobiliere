@@ -1,6 +1,6 @@
 <x-layouts.app
     :meta-title="'À propos'"
-    :meta-description="'En savoir plus sur VOTRE-MARQUE.'"
+    :meta-description="'En savoir plus sur '.config('app.name').'.'"
 >
     {{--
         Page structurelle : le texte ci-dessous est un point de depart a

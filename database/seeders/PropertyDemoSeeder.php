@@ -8,21 +8,26 @@ use App\Models\City;
 use App\Models\Property;
 use App\Models\PropertyStyle;
 use App\Models\PropertyType;
+use Database\Seeders\Concerns\GeneratesPlaceholderImages;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
 class PropertyDemoSeeder extends Seeder
 {
+    use GeneratesPlaceholderImages;
+
     /**
      * Biens d'exemple pour visualiser les composants et assembler la page
      * d'accueil, avant que le vrai back-office de gestion des biens n'existe
      * (module 7). A supprimer ou remplacer sans consequence.
      *
-     * Photos : images de substitution (Lorem Picsum) telechargees a
-     * l'execution du seeder - necessite un acces internet sur ta machine
-     * (contrairement a mon environnement de travail qui n'y a pas acces).
-     * Ce ne sont pas de vraies photos de biens, juste de quoi visualiser
-     * la mise en page correctement en attendant le vrai media manager.
+     * Photos : generees localement (GD, deja requis par les conversions
+     * d'images du modele Property) plutot que telechargees depuis
+     * picsum.photos. L'ancienne version dependait d'un acces internet et
+     * d'un certificat SSL valide au moment du seed - une source frequente
+     * d'echecs silencieux (pare-feu, proxy, CA obsolete sur XAMPP/Windows).
+     * Ce ne sont pas de vraies photos de biens, juste de quoi visualiser la
+     * mise en page correctement en attendant les vraies photos.
      */
     public function run(): void
     {
@@ -104,15 +109,15 @@ class PropertyDemoSeeder extends Seeder
             );
 
             if ($property->getMedia('gallery')->isEmpty()) {
-                $seed = Str::slug($sample['title']);
-
                 try {
-                    $property->addMediaFromUrl("https://picsum.photos/seed/{$seed}/900/675")
+                    $path = $this->generatePlaceholderImage($sample['title']);
+                    $property->addMedia($path)
+                        ->usingFileName(Str::slug($sample['title']).'.jpg')
                         ->toMediaCollection('gallery');
                 } catch (\Throwable $e) {
-                    // Pas d'accès internet ou service indisponible : on continue
+                    // Extension GD indisponible ou erreur inattendue : on continue
                     // sans photo plutôt que de faire échouer tout le seeder.
-                    $this->command?->warn("Photo non téléchargée pour {$sample['title']} : {$e->getMessage()}");
+                    $this->command?->warn("Photo non générée pour {$sample['title']} : {$e->getMessage()}");
                 }
             }
         }

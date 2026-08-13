@@ -7,6 +7,7 @@ use App\Models\City;
 use App\Models\Property;
 use App\Models\PropertyType;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -27,6 +28,17 @@ class SubmitProperty extends Component
 
     public function submit(): void
     {
+        // Limitation de débit (§8) : un compte client authentifié reste
+        // limité à quelques soumissions par heure.
+        $throttleKey = 'submit-property|'.Auth::id();
+
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
+            $minutes = (int) ceil(RateLimiter::availableIn($throttleKey) / 60);
+            $this->addError('title', "Trop de biens soumis récemment. Réessayez dans environ {$minutes} minute(s).");
+
+            return;
+        }
+
         $validated = $this->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:3000'],
@@ -34,8 +46,11 @@ class SubmitProperty extends Component
             'city_id' => ['nullable', 'exists:cities,id'],
             'property_type_id' => ['nullable', 'exists:property_types,id'],
             'price' => ['required', 'numeric', 'min:0'],
+            'photos' => ['array', 'max:10'],
             'photos.*' => ['nullable', 'image', 'max:5120'],
         ]);
+
+        RateLimiter::hit($throttleKey, 3600);
 
         $property = Property::create([
             'title' => $validated['title'],

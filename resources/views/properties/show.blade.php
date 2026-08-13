@@ -1,7 +1,7 @@
 <x-layouts.app
     :meta-title="$property->meta_title ?? $property->title"
     :meta-description="$property->meta_description ?? str($property->description)->limit(155)"
-    :og-image="$property->getFirstMediaUrl('gallery') ?: null"
+    :og-image="$property->imageUrl('detail')"
 >
     @php
         $structuredData = [
@@ -24,7 +24,7 @@
             ];
         }
 
-        if ($image = $property->getFirstMediaUrl('gallery')) {
+        if ($image = $property->imageUrl('detail')) {
             $structuredData['image'] = $image;
         }
 
@@ -50,26 +50,33 @@
         </nav>
 
         <div class="relative overflow-hidden rounded-[var(--radius-card)] bg-neutral-100">
-            <div class="aspect-[16/9]">
-                @if ($property->getFirstMediaUrl('gallery'))
-                    <img
-                        src="{{ $property->getFirstMediaUrl('gallery') }}"
-                        alt="{{ $property->title }}"
-                        class="h-full w-full object-cover"
-                    >
-                @else
-                    <div class="flex h-full w-full items-center justify-center text-[color:var(--color-ink-secondary)]">
-                        <x-ui.icon name="photo" class="h-12 w-12" />
-                    </div>
-                @endif
-            </div>
+            @php $galleryMedia = $property->getMedia('gallery'); @endphp
 
-            <div class="absolute right-4 top-4">
+            @if ($galleryMedia->isNotEmpty())
+                <x-ui.carousel scroll-amount="full">
+                    @foreach ($galleryMedia as $media)
+                        <div class="aspect-[16/9] w-full flex-shrink-0 snap-center">
+                            <img
+                                src="{{ $media->hasGeneratedConversion('detail') ? $media->getUrl('detail') : $media->getUrl() }}"
+                                alt="{{ $property->title }} — photo {{ $loop->iteration }}/{{ $loop->count }}"
+                                class="h-full w-full object-cover"
+                                @if (! $loop->first) loading="lazy" @endif
+                            >
+                        </div>
+                    @endforeach
+                </x-ui.carousel>
+            @else
+                <div class="flex aspect-[16/9] w-full items-center justify-center text-[color:var(--color-ink-secondary)]">
+                    <x-ui.icon name="photo" class="h-12 w-12" />
+                </div>
+            @endif
+
+            <div class="absolute right-4 top-4 z-10">
                 <livewire:favorite-button :property="$property" :key="'fav-detail-'.$property->id" />
             </div>
 
             @if (! empty($property->points_of_interest))
-                <div class="pointer-events-none absolute inset-0">
+                <div class="pointer-events-none absolute inset-x-0 top-0 z-10 aspect-[16/9]">
                     @foreach ($property->points_of_interest as $point)
                         <div class="pointer-events-auto absolute {{ $positionClasses[$point['position'] ?? 'top-left'] ?? $positionClasses['top-left'] }}">
                             <x-ui.floating-tag>{{ $point['label'] }}</x-ui.floating-tag>

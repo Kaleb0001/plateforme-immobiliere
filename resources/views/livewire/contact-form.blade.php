@@ -5,6 +5,12 @@
         </p>
     @endif
 
+    @if ($throttleMessage)
+        <p class="rounded-[var(--radius-field)] bg-amber-50 p-3 text-sm text-amber-700">
+            {{ $throttleMessage }}
+        </p>
+    @endif
+
     <x-form.input name="name" label="Nom complet" wire:model="name" placeholder="Votre nom..." />
     <x-form.input name="email" type="email" label="Email" wire:model="email" placeholder="Votre email..." />
 
