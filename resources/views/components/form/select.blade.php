@@ -7,7 +7,7 @@
     <select
         id="{{ $name }}"
         name="{{ $name }}"
-        {{ $attributes->merge(['class' => 'mt-1 w-full rounded-[var(--radius-field)] border-0 bg-neutral-100 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-ink)]']) }}
+        {{ $attributes->merge(['class' => 'select-chevron mt-1 w-full rounded-[var(--radius-field)] border-0 bg-neutral-100 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[color:var(--color-ink)]']) }}
     >
         {{ $slot }}
     </select>

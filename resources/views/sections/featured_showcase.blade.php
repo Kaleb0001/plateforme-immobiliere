@@ -45,7 +45,7 @@ $properties = $properties ?? collect();
                             <p class="mt-2 line-clamp-2 text-sm text-[color:var(--color-ink-secondary)]">{{ $property->description }}</p>
 
                             <div class="mt-4 flex items-center justify-between">
-                                <div class="flex gap-2">
+                                <div class="flex items-center gap-2.5">
                                     <button
                                         type="button"
                                         @click="index = (index - 1 + count) % count"
@@ -55,6 +55,7 @@ $properties = $properties ?? collect();
                                     >
                                         <x-ui.icon name="chevron-left" class="h-4 w-4" />
                                     </button>
+                                    <span class="h-1 w-1 rounded-full bg-[color:var(--color-border)]" aria-hidden="true"></span>
                                     <button
                                         type="button"
                                         @click="index = (index + 1) % count"

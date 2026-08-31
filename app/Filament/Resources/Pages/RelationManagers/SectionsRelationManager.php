@@ -66,7 +66,7 @@ class SectionsRelationManager extends RelationManager
                 Textarea::make('config.subtitle')->label('Sous-titre')
                     ->visible(fn ($get) => in_array($get('type'), ['hero', 'contact'])),
                 TextInput::make('config.tag_1')->label('Badge flottant gauche (ex. Acheter un bien)')
-                    ->visible(fn ($get) => $get('type') === 'hero'),
+                    ->visible(fn ($get) => in_array($get('type'), ['hero', 'footer'])),
                 TextInput::make('config.tag_2')->label('Badge flottant droit (ex. Vendre un bien)')
                     ->visible(fn ($get) => $get('type') === 'hero'),
 
@@ -78,6 +78,10 @@ class SectionsRelationManager extends RelationManager
                     ->visible(fn ($get) => $get('type') === 'about'),
                 Textarea::make('config.light_text')->label('Texte (atténué)')
                     ->visible(fn ($get) => $get('type') === 'about'),
+                TextInput::make('config.rating')->label('Note (bloc de confiance, ex. 4.5)')
+                    ->visible(fn ($get) => in_array($get('type'), ['hero', 'about', 'contact'])),
+                TextInput::make('config.review_count')->label("Nombre d'avis (ex. 10k avis)")
+                    ->visible(fn ($get) => in_array($get('type'), ['hero', 'about', 'contact'])),
 
                 Repeater::make('config.steps')->label('Étapes')
                     ->schema([

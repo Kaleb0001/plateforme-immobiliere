@@ -25,6 +25,10 @@
             <div class="absolute right-3 top-3">
                 <livewire:favorite-button :property="$property" :key="'fav-card-'.$property->id.'-'.uniqid()" />
             </div>
+
+            <span class="card-wave" aria-hidden="true">
+                <svg viewBox="0 0 200 20" preserveAspectRatio="none"><path d="M0,10 Q25,0 50,10 T100,10 T150,10 T200,10 V20 H0 Z" fill="currentColor" /></svg>
+            </span>
         </div>
 
         <div class="space-y-2 p-4">

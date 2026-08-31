@@ -38,6 +38,10 @@
                 <x-ui.floating-tag>{{ $config['tag_1'] ?? 'Acheter un bien' }}</x-ui.floating-tag>
                 <x-ui.floating-tag dot-position="right">{{ $config['tag_2'] ?? 'Vendre un bien' }}</x-ui.floating-tag>
             </div>
+
+            <div class="absolute bottom-28 right-6 z-10 hidden sm:block sm:right-12">
+                <x-ui.trust-badge :rating="$config['rating'] ?? '4.5'" :review-count="$config['review_count'] ?? '10k avis'" dark />
+            </div>
         </div>
     </div>
 
@@ -52,11 +56,11 @@
     >
         <input type="hidden" name="transaction" :value="tab === 'location' ? 'location' : 'vente'">
 
-        <div class="mb-6 inline-flex rounded-[var(--radius-pill)] bg-neutral-100 p-1">
+        <div class="mb-6 flex rounded-[var(--radius-pill)] bg-neutral-100 p-1 sm:inline-flex">
             <button
                 type="button"
                 @click="tab = 'location'"
-                class="rounded-[var(--radius-pill)] px-5 py-2 text-sm font-medium transition"
+                class="flex-1 rounded-[var(--radius-pill)] px-5 py-2.5 text-sm font-medium transition sm:flex-none sm:py-2"
                 :class="tab === 'location' ? 'bg-[color:var(--color-ink)] text-white' : 'text-[color:var(--color-ink-secondary)]'"
             >
                 Location
@@ -64,7 +68,7 @@
             <button
                 type="button"
                 @click="tab = 'achat'"
-                class="rounded-[var(--radius-pill)] px-5 py-2 text-sm font-medium transition"
+                class="flex-1 rounded-[var(--radius-pill)] px-5 py-2.5 text-sm font-medium transition sm:flex-none sm:py-2"
                 :class="tab === 'achat' ? 'bg-[color:var(--color-ink)] text-white' : 'text-[color:var(--color-ink-secondary)]'"
             >
                 Achat
@@ -93,7 +97,24 @@
                 @endforeach
             </x-form.select>
 
-            <x-form.input name="price_max" type="number" label="Budget max (€)" placeholder="200000" />
+            <div>
+                <label for="price_max" class="text-sm font-medium">Budget max</label>
+                <div class="mt-1 flex items-center gap-2 rounded-[var(--radius-field)] bg-neutral-100 px-3 py-2.5">
+                    <span class="text-[color:var(--color-ink-secondary)]">€</span>
+                    <input
+                        type="text"
+                        inputmode="numeric"
+                        id="price_max"
+                        name="price_max"
+                        placeholder="200 000"
+                        class="w-full min-w-0 border-0 bg-transparent p-0 focus:outline-none focus:ring-0"
+                    >
+                    <x-ui.icon name="chevron-updown" class="h-4 w-4 shrink-0 text-[color:var(--color-ink-secondary)]" />
+                </div>
+                @error('price_max')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
 
             <x-form.button class="w-full justify-center">Rechercher</x-form.button>
         </div>

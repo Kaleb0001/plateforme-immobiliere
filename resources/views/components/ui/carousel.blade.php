@@ -28,7 +28,7 @@
         <button
             type="button"
             @click="scrollByAmount(1)"
-            class="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-border)] transition hover:bg-[color:var(--color-ink)] hover:text-white"
+            class="flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-ink)] bg-[color:var(--color-ink)] text-white transition hover:opacity-85"
             aria-label="Suivant"
         >
             <x-ui.icon name="chevron-right" class="h-4 w-4" />
