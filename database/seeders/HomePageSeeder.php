@@ -29,6 +29,8 @@ class HomePageSeeder extends Seeder
                     'subtitle' => 'Nous vous aidons à trouver le bien idéal, un projet à la fois. Votre satisfaction est notre priorité.',
                     'tag_1' => 'Acheter un bien',
                     'tag_2' => 'Vendre un bien',
+                    'rating' => '4.5',
+                    'review_count' => '10k avis',
                 ],
             ],
             [
@@ -38,6 +40,8 @@ class HomePageSeeder extends Seeder
                     'eyebrow' => 'À PROPOS',
                     'strong_text' => "Nous sommes votre partenaire de confiance dans l'immobilier. Notre équipe ",
                     'light_text' => 'est dédiée à vous offrir un service personnalisé et les meilleurs résultats possibles. De la recherche de votre bien idéal à la vente de votre propriété au juste prix, nous vous accompagnons à chaque étape.',
+                    'rating' => '4.5',
+                    'review_count' => '10k avis',
                 ],
             ],
             [
@@ -97,12 +101,15 @@ class HomePageSeeder extends Seeder
                     'eyebrow' => 'CONTACT',
                     'title' => 'Vous ne savez pas par où commencer ? Contactez-nous et remplissez le formulaire.',
                     'subtitle' => 'Contactez-nous et dites-nous ce dont vous avez besoin.',
+                    'rating' => '4.5',
+                    'review_count' => '10k avis',
                 ],
             ],
             [
                 'type' => 'footer',
                 'order' => 9,
                 'config' => [
+                    'tag_1' => 'Louer un bien',
                     'nav_links' => [
                         ['label' => 'Vendre un bien', 'href' => route('register', absolute: false)],
                         ['label' => 'Acheter un bien', 'href' => route('properties.search', ['transaction' => 'vente'], absolute: false)],

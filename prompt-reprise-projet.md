@@ -118,7 +118,30 @@ Sur Windows, si la commande échoue silencieusement : activer le Mode développe
 - Toujours vérifier les versions actuelles (recherche web) avant de fournir du code pour un framework/package à évolution rapide (Laravel, Filament) plutôt que de se fier à la mémoire d'entraînement — plusieurs corrections ont déjà été nécessaires sur ce projet suite à des versions obsolètes fournies par erreur.
 - Ce prompt de reprise n'est fourni qu'à la demande explicite de l'utilisateur, pas automatiquement à chaque module.
 
-## Prochaine étape (là où on s'est arrêté)
+## Portage des affinages du template statique (session du 08/08/2026)
+
+Le template HTML/CSS/JS autonome construit en parallèle (recréation pixel-perfect de la maquette, affinée à partir de captures zoomées) a servi de référence pour compléter le vrai projet Laravel. Détail dans la conversation ; résumé ci-dessous.
+
+**Constat notable :** plusieurs détails de la maquette (accordéon FAQ numéroté avec chevron qui se retourne, carte de bien avec bouton déplier/replier) étaient déjà correctement implémentés côté Laravel — mieux que ma première version du template statique, qui a dû être corrigée pour les rattraper. Ce portage a donc surtout comblé de vraies lacunes plutôt que dupliqué du travail déjà fait.
+
+**Ajouté :**
+- **Bloc de confiance (note + avatars)** dans les sections About, Contact et Hero — prévu explicitement au cahier des charges pour la section About ("bloc de confiance (note + avatars)") mais jamais implémenté jusqu'ici. Nouveau composant `x-ui.trust-badge`, admin-éditable (note + nombre d'avis) via de nouveaux champs Filament.
+- **Vague décorative** entre photo et carte info sur les cartes de bien (`x-ui.property-card`), ajoutée en CSS pur (`.card-wave` dans `app.css`) pour ne pas fragiliser les classes Tailwind.
+- **Flèche personnalisée sur les champs `<select>`** (`.select-chevron`), cohérente avec le reste du système d'icônes plutôt que la flèche native du système d'exploitation.
+- **Champ "Budget max" du widget de recherche** refait en saisie libre avec icône stepper, fidèle à la capture zoomée de la maquette.
+- **Tabs Location/Achat pleine largeur sur mobile**, compactes à partir de `sm:`.
+- **Bouton "suivant" mis en avant (rempli)** sur tous les carrousels (`x-ui.carousel`), "précédent" juste bordé — asymétrie repérée sur la maquette.
+- **Séparateur central** entre les flèches du bien vedette.
+- **Footer corrigé** : la barre de navigation (liens + réseaux sociaux) est maintenant sur fond blanc, séparée du bloc photo — elle était auparavant surimposée en blanc sur la photo, une erreur de structure identique à celle corrigée sur le template statique. Badge flottant ajouté sur le bloc photo, admin-éditable.
+- Icônes ajoutées au composant `x-ui.icon` : `chevron-updown`, `star`, `play`, `link`, et les icônes réseaux sociaux (`instagram`, `linkedin`, `facebook`).
+
+**Volontairement laissé de côté :**
+- Le badge flottant "à mini-aperçu photo" (ex. "Swimming pool" avec vignette + icône lecture) du bien vedette n'a pas été porté : nécessiterait d'étendre le schéma `points_of_interest` (JSON) pour supporter une image par point d'intérêt, un changement de modèle de données disproportionné pour un détail purement décoratif.
+- Le pattern d'interaction "carte qui se replie/déplie" du projet Laravel (bascule vers une face sombre avec description complète) a été conservé tel quel plutôt que remplacé par le pattern plus simple du template (accordéon dans la même carte) : c'est une amélioration créative déjà validée par l'utilisateur, distincte de la maquette mais cohérente avec l'identité visuelle du projet.
+
+---
+
+
 
 La revue générale des remarques et améliorations mises de côté a été faite (voir section Audit ci-dessus). Il reste :
 1. **Action manuelle immédiate côté utilisateur** : `php artisan storage:link` (voir diagnostic ci-dessus), puis réinstaller/rafraîchir les dépendances si besoin (`composer install`, `npm install && npm run build`) et rejouer les seeders (`php artisan migrate:fresh --seed`) pour bénéficier des nouvelles photos générées localement et des nouveaux champs de section.

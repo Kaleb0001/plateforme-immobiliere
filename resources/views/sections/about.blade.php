@@ -9,4 +9,8 @@
         <span class="font-semibold">{{ $config['strong_text'] ?? '' }}</span>
         <span class="text-[color:var(--color-ink-secondary)]">{{ $config['light_text'] ?? '' }}</span>
     </p>
+
+    <div class="mt-8 flex justify-center">
+        <x-ui.trust-badge :rating="$config['rating'] ?? '4.5'" :review-count="$config['review_count'] ?? '10k avis'" />
+    </div>
 </section>
